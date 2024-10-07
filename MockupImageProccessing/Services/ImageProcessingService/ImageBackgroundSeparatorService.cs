@@ -81,6 +81,19 @@ public class ImageBackgroundSeparatorService
             }
         }
 
+        //take 5 largest contour
+        var minX = _imageSize.Width;
+        int minXIndex = -1;
+        for (int i = 0; i < largestContours.Count; i++)
+        {
+            var m = MinXPoint(contours[largestContours[i]]).X;
+            if (m < minX)
+            {
+                minXIndex = i;
+                minX = m;
+            }
+                
+        }
         if (maxContourIndex >= 0)
         {
             var outline = contours[maxContourIndex].ToArray();
@@ -89,6 +102,20 @@ public class ImageBackgroundSeparatorService
         return null;
     }
 
+    private Point MinXPoint(VectorOfPoint contour)
+    {
+        var minXPoint = contour[0];
+        for (int i = 0; i < contour.Size; i++)
+        {
+            if (contour[i].X < minXPoint.X)
+            {
+                minXPoint = contour[i];
+            }
+                
+        }
+
+        return minXPoint;
+    }
 
     private Point FindMostLeftPoint()
     {
