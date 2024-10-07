@@ -186,28 +186,46 @@
     </UserControl.Resources>
     <Grid RowDefinitions="Auto,20,*">
         <TextBlock HorizontalAlignment="Left" Text="Mockup image processing" FontWeight="SemiBold" FontSize="25"></TextBlock>
-        <Grid Row="2" ColumnDefinitions="Auto,10,*">
+        <Grid Row="2" ColumnDefinitions="*,10,Auto">
             <Grid Column="0">
-                <Border VerticalAlignment="Top" CornerRadius="10" BorderBrush="{DynamicResource ButtonBorderBrush}"
-                        BorderThickness="0"
-                        Width="800">
-                    <Grid>
-                        <TextBlock FontSize="25" Foreground="{DynamicResource ButtonForegroundDisabled}"
-                                   HorizontalAlignment="Center" VerticalAlignment="Center"
-                                   IsVisible="{Binding ShowNoImageText}" Text="No image selected">
-                        </TextBlock>
-                        <TextBlock FontSize="25" Foreground="{DynamicResource ButtonForegroundDisabled}"
-                                   HorizontalAlignment="Center" VerticalAlignment="Center"
-                                   IsVisible="{Binding !ShowNoImageText}" Text="Click Render to start">
-                        </TextBlock>
-                        <Image Height="800" Stretch="Uniform" Source="{Binding DisplayImage}"></Image>
-                    </Grid>
-                </Border>
-
+                <Viewbox HorizontalAlignment="Left" VerticalAlignment="Center">
+                    <Border  CornerRadius="10" BorderBrush="{DynamicResource ButtonBorderBrush}"
+                            BorderThickness="0">
+                        <Grid>
+                            <TextBlock FontSize="12" Margin="50" Foreground="{DynamicResource ButtonForegroundDisabled}"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center"
+                                       IsVisible="{Binding ShowNoImageText}" Text="No image selected">
+                            </TextBlock>
+                            <TextBlock FontSize="12" Margin="50" Foreground="{DynamicResource ButtonForegroundDisabled}"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center"
+                                       IsVisible="{Binding !ShowNoImageText}" Text="Click Render to start">
+                            </TextBlock>
+                            <Image Stretch="Uniform" Source="{Binding DisplayImage}"></Image>
+               
+                        </Grid>
+                    </Border>
+                </Viewbox>
             </Grid>
-
-            <Grid Grid.Column="2" IsEnabled="{Binding !IsRendering}" RowDefinitions="*,Auto">
-                <ScrollViewer IsScrollInertiaEnabled="True">
+            <Grid Grid.Column="2" MinWidth="700" MaxWidth="800" IsEnabled="{Binding !IsRendering}" RowDefinitions="Auto,20,*">
+                <Grid Row="0">
+                    <TextBlock Foreground="{DynamicResource ButtonForegroundDisabled}" Text="Settings" Margin="0,20,0,0" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="SemiBold"></TextBlock>
+                    <StackPanel HorizontalAlignment="Right" Margin="0,20,0,0" Orientation="Horizontal" Spacing="15">
+                        <Border Padding="5,0" CornerRadius="4" Height="30" BorderThickness="1" BorderBrush="{DynamicResource SystemAccentColor}">
+                            <Border.Background>
+                                <SolidColorBrush Color="{DynamicResource SystemAccentColor}" Opacity="0.25"></SolidColorBrush>
+                            </Border.Background>
+                            <TextBlock Foreground="{DynamicResource AccentButtonBackground}" VerticalAlignment="Center" FontWeight="SemiBold" Text="{Binding TimeElapsed}"></TextBlock>
+                        </Border>
+                        <Button IsEnabled="{Binding CanRender}" Command="{Binding ProcessImageCommand}"
+                                Classes="accent">
+                            <Grid ColumnDefinitions="auto,8,*">
+                                <PathIcon Width="12" Height="12" Data="{DynamicResource playOutline}"></PathIcon>
+                                <TextBlock Text="Render" Grid.Column="2"></TextBlock>
+                            </Grid>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+                <ScrollViewer Grid.Row="2" IsScrollInertiaEnabled="True">
                     <Grid>
                         <StackPanel Spacing="20">
                             <StackPanel Spacing="8">
@@ -242,12 +260,15 @@
                                 <TextBlock Text="Naming prefix" FontWeight="SemiBold"></TextBlock>
 
                                 <StackPanel Spacing="2">
-                                    <TextBox IsEnabled="{Binding !UseOriginalName}" VerticalContentAlignment="Center" Text="{Binding Prefix}">
+                                    <TextBox IsEnabled="{Binding !UseOriginalName}" VerticalContentAlignment="Center"
+                                             Text="{Binding Prefix}">
 
                                     </TextBox>
                                     <ui:InfoBar Title="Note" IsOpen="True" Severity="Informational" IsClosable="False"
-                                                Message="this prefix will be used to name output files: [Prefix]-01..." >
-                                        <ToggleSwitch IsChecked="{Binding UseOriginalName}" Margin="0,0,0,10" Content="Use original name instead, make sure folder is empty"></ToggleSwitch>
+                                                Message="this prefix will be used to name output files: [Prefix]-01...">
+                                        <ToggleSwitch IsChecked="{Binding UseOriginalName}" Margin="0,0,0,10"
+                                                      Content="Use original name instead, make sure folder is empty">
+                                        </ToggleSwitch>
                                     </ui:InfoBar>
                                 </StackPanel>
 
@@ -373,17 +394,6 @@
 
                     </Grid>
                 </ScrollViewer>
-                <Grid Row="1">
-                    <Button Margin="0,20,0,0" IsEnabled="{Binding CanRender}" Command="{Binding ProcessImageCommand}"
-                            Classes="accent" HorizontalAlignment="Right" VerticalAlignment="Bottom">
-                        <Grid ColumnDefinitions="auto,8,*">
-                            <PathIcon Width="13" Data="{DynamicResource playComposition}"></PathIcon>
-                            <TextBlock Text="Render" Grid.Column="2"></TextBlock>
-                        </Grid>
-
-                    </Button>
-                </Grid>
-
             </Grid>
 
 

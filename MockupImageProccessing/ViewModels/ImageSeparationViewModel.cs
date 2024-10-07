@@ -75,6 +75,8 @@ public class ImageSeparationViewModel : ViewModelBase
     private async Task ProcessImage()
     {
         IsRendering = true;
+        var timer = new Stopwatch();
+        timer.Start();
         var imageProcessor = new ImageBackgroundSeparatorService();
         int count = 0;
         if (!Directory.Exists(OutputDirectory))
@@ -97,6 +99,11 @@ public class ImageSeparationViewModel : ViewModelBase
         }
 
         IsRendering = false;
+        
+        //B: Run stuff you want timed
+        timer.Stop();
+        TimeSpan timeTaken = timer.Elapsed;
+        TimeElapsed = "Time taken: " + timeTaken.ToString(@"m\:ss\.fff"); 
         if (OpenOutputDirectory)
         {
             OpenDierectory(OutputDirectory);
@@ -298,6 +305,17 @@ public class ImageSeparationViewModel : ViewModelBase
         set
         {
             _useOriginalName = value;
+            OnPropertyChanged();
+        }
+    }
+
+    private string _timeElapsed = "Time taken show here";
+    public string TimeElapsed
+    {
+        get => _timeElapsed;
+        set
+        {
+            _timeElapsed = value;
             OnPropertyChanged();
         }
     }

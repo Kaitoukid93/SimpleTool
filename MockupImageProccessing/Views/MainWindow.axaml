@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
         Width="1500" Height="1000"
+        MinWidth="700"
         ExtendClientAreaToDecorationsHint="True"
         x:Class="MockupImageProccessing.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
@@ -156,7 +157,7 @@
                 </ListBox>
             </Grid>
             <Grid Column="1">
-                <ContentControl MinWidth="500" Margin="10,0,20,20" Content="{Binding CurrentViewModel}"></ContentControl>
+                <ContentControl Margin="10,0,20,20" Content="{Binding CurrentViewModel}"></ContentControl>
             </Grid>
         </Grid>
 
