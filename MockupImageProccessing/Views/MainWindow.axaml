@@ -9,7 +9,7 @@
         ExtendClientAreaToDecorationsHint="True"
         x:Class="MockupImageProccessing.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
-        Icon="/Assets/avalonia-logo.ico"
+        Icon="/Assets/appIcon.ico"
         Title="MockupImageProcessing">
     <Window.Resources>
         <ControlTheme TargetType="ListBoxItem" x:Key="_sideMenuListBoxItem">
