@@ -116,7 +116,7 @@ public class ImageSeparationViewModel : ViewModelBase
         Process.Start(startInfo);
     }
 
-    private int _interval = 30;
+    private int _interval = 10;
 
     public int Interval
     {

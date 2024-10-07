@@ -288,8 +288,8 @@
                                                                  Description="Cpu usage will be limited by adjusting sleep time between image processing"
                                                                  IsClickEnabled="False">
                                             <ui:SettingsExpanderItem.Footer>
-                                                <Slider Value="{Binding Interval}" Width="160" Minimum="10"
-                                                        Maximum="2000">
+                                                <Slider Value="{Binding Interval}" Width="160" Minimum="5"
+                                                        Maximum="100">
                                                 </Slider>
                                             </ui:SettingsExpanderItem.Footer>
                                         </ui:SettingsExpanderItem>
