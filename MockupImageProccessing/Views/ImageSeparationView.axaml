@@ -245,7 +245,7 @@
                                     <TextBox IsEnabled="{Binding !UseOriginalName}" VerticalContentAlignment="Center" Text="{Binding Prefix}">
 
                                     </TextBox>
-                                    <ui:InfoBar Title="Note" IsOpen="True" Severity="Informational"
+                                    <ui:InfoBar Title="Note" IsOpen="True" Severity="Informational" IsClosable="False"
                                                 Message="this prefix will be used to name output files: [Prefix]-01..." >
                                         <ToggleSwitch IsChecked="{Binding UseOriginalName}" Margin="0,0,0,10" Content="Use original name instead, make sure folder is empty"></ToggleSwitch>
                                     </ui:InfoBar>
