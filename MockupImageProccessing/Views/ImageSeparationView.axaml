@@ -6,9 +6,30 @@
              xmlns:vm="clr-namespace:MockupImageProccessing.ViewModels"
 
              xmlns:ui="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+             xmlns:behavior="clr-namespace:MockupImageProccessing.Behavior"
              x:DataType="vm:ImageSeparationViewModel"
              x:Class="MockupImageProccessing.Views.ImageSeparationView">
+    <UserControl.Styles>
+        <Style Selector="Border.renderStatus">
+            <Setter Property="Background" Value="{DynamicResource accentBackgroundBrush}"></Setter>
+            <Setter Property="BorderBrush" Value="{DynamicResource SystemAccentColor}"></Setter>
+            <Style Selector="^.rendering">
+                <Setter Property="Background" Value="{DynamicResource warningBackgroundBrush}"></Setter>
+                <Setter Property="BorderBrush" Value="OrangeRed"></Setter>
+            </Style>
+        </Style>
+        
+      
+        <Style Selector="TextBlock.renderStatus">
+            <Setter Property="Foreground" Value="{DynamicResource SystemAccentColor}"></Setter>
+            <Style Selector="^.rendering">
+                <Setter Property="Foreground" Value="OrangeRed"></Setter>
+            </Style>
+        </Style>
+    </UserControl.Styles>
     <UserControl.Resources>
+        <SolidColorBrush x:Key="accentBackgroundBrush" Color="{DynamicResource SystemAccentColor}" Opacity="0.25"></SolidColorBrush>
+        <SolidColorBrush x:Key="warningBackgroundBrush" Color="OrangeRed" Opacity="0.25"></SolidColorBrush>
         <ControlTheme TargetType="TextBox" x:Key="{x:Type TextBox}">
             <Setter Property="Foreground" Value="{DynamicResource TextControlForeground}" />
             <Setter Property="Background" Value="{DynamicResource TextControlBackground}" />
@@ -189,34 +210,49 @@
         <Grid Row="2" ColumnDefinitions="*,10,Auto">
             <Grid Column="0">
                 <Viewbox HorizontalAlignment="Left" VerticalAlignment="Center">
-                    <Border  CornerRadius="10" BorderBrush="{DynamicResource ButtonBorderBrush}"
+                    <Border CornerRadius="10" BorderBrush="{DynamicResource ButtonBorderBrush}"
                             BorderThickness="0">
                         <Grid>
-                            <TextBlock FontSize="12" Margin="50" Foreground="{DynamicResource ButtonForegroundDisabled}"
+                            <TextBlock FontSize="12" Margin="50"
+                                       Foreground="{DynamicResource ButtonForegroundDisabled}"
                                        HorizontalAlignment="Center" VerticalAlignment="Center"
                                        IsVisible="{Binding ShowNoImageText}" Text="No image selected">
                             </TextBlock>
-                            <TextBlock FontSize="12" Margin="50" Foreground="{DynamicResource ButtonForegroundDisabled}"
+                            <TextBlock FontSize="12" Margin="50"
+                                       Foreground="{DynamicResource ButtonForegroundDisabled}"
                                        HorizontalAlignment="Center" VerticalAlignment="Center"
                                        IsVisible="{Binding !ShowNoImageText}" Text="Click Render to start">
                             </TextBlock>
                             <Image Stretch="Uniform" Source="{Binding DisplayImage}"></Image>
-               
+
                         </Grid>
                     </Border>
                 </Viewbox>
             </Grid>
-            <Grid Grid.Column="2" MinWidth="700" MaxWidth="800" IsEnabled="{Binding !IsRendering}" RowDefinitions="Auto,20,*">
-                <Grid Row="0">
-                    <TextBlock Foreground="{DynamicResource ButtonForegroundDisabled}" Text="Settings" Margin="0,20,0,0" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="SemiBold"></TextBlock>
-                    <StackPanel HorizontalAlignment="Right" Margin="0,20,0,0" Orientation="Horizontal" Spacing="15">
-                        <Border Padding="5,0" CornerRadius="4" Height="30" BorderThickness="1" BorderBrush="{DynamicResource SystemAccentColor}">
-                            <Border.Background>
-                                <SolidColorBrush Color="{DynamicResource SystemAccentColor}" Opacity="0.25"></SolidColorBrush>
-                            </Border.Background>
-                            <TextBlock Foreground="{DynamicResource AccentButtonBackground}" VerticalAlignment="Center" FontWeight="SemiBold" Text="{Binding TimeElapsed}"></TextBlock>
+            <Grid Grid.Column="2" MinWidth="700" MaxWidth="800"
+                  RowDefinitions="Auto,20,*">
+                <Grid Row="0" ColumnDefinitions="*,Auto">
+                    <Grid IsVisible="{Binding IsRendering}" ColumnDefinitions="*,10,Auto" Margin="0,20,20,0">
+                        <ProgressBar  behavior:ProgressBarSmoother.Value="{Binding CurrentProgress}" Minimum="0" Maximum="100"   HorizontalAlignment="Stretch"></ProgressBar>
+                        <ui:ProgressRing Grid.Column="2" IsIndeterminate="True"  Width="20" Height="20"></ui:ProgressRing>
+                    </Grid>
+                   
+                    <StackPanel Grid.Column="1" HorizontalAlignment="Right" Margin="0,20,0,0" Orientation="Horizontal"
+                                Spacing="15">
+                        <Border Padding="5,0" CornerRadius="4" Height="30" Classes="renderStatus" Classes.rendering="{Binding IsRendering}" MinWidth="120" BorderThickness="1"
+                               >
+                            <TextBlock Classes="renderStatus" Classes.rendering="{Binding IsRendering}" HorizontalAlignment="Center"  VerticalAlignment="Center"
+                                       FontWeight="SemiBold" Text="{Binding TimeElapsed}">
+                            </TextBlock>
                         </Border>
-                        <Button IsEnabled="{Binding CanRender}" Command="{Binding ProcessImageCommand}"
+                        <Button Command="{Binding StopCommand}" IsVisible="{Binding IsRendering}"
+                                Background="OrangeRed">
+                            <Grid ColumnDefinitions="auto,8,*">
+                                <PathIcon Width="12" Height="12" Data="{DynamicResource stopComposition}"></PathIcon>
+                                <TextBlock Text="Stop" Grid.Column="2"></TextBlock>
+                            </Grid>
+                        </Button>
+                        <Button IsEnabled="{Binding CanRender}" IsVisible="{Binding !IsRendering}" Command="{Binding ProcessImageCommand}"
                                 Classes="accent">
                             <Grid ColumnDefinitions="auto,8,*">
                                 <PathIcon Width="12" Height="12" Data="{DynamicResource playOutline}"></PathIcon>
@@ -225,7 +261,7 @@
                         </Button>
                     </StackPanel>
                 </Grid>
-                <ScrollViewer Grid.Row="2" IsScrollInertiaEnabled="True">
+                <ScrollViewer Grid.Row="2" IsEnabled="{Binding !IsRendering}" IsScrollInertiaEnabled="True">
                     <Grid>
                         <StackPanel Spacing="20">
                             <StackPanel Spacing="8">
@@ -398,7 +434,7 @@
 
 
             <Grid Column="2">
-                <ui:ProgressRing IsIndeterminate="True" IsVisible="{Binding IsRendering}" Width="80" Height="80"></ui:ProgressRing>
+            
             </Grid>
         </Grid>
 

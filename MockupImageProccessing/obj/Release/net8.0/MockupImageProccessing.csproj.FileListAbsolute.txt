@@ -107,3 +107,4 @@ C:\Users\zOe\RiderProjects\MockupImageProccessing\MockupImageProccessing\obj\Rel
 C:\Users\zOe\RiderProjects\MockupImageProccessing\MockupImageProccessing\obj\Release\net8.0\MockupIm.C9CCC680.Up2Date
 C:\Users\zOe\RiderProjects\MockupImageProccessing\MockupImageProccessing\obj\Release\net8.0\MockupImageProccessing.genruntimeconfig.cache
 C:\Users\zOe\RiderProjects\MockupImageProccessing\MockupImageProccessing\obj\Release\net8.0\ref\MockupImageProccessing.dll
+C:\Users\zOe\RiderProjects\MockupImageProccessing\MockupImageProccessing\obj\Release\net8.0\MockupImageProccessing.sourcelink.json

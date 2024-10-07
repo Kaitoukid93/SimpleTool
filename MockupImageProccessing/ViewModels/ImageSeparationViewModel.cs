@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Avalonia.Media;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.VisualBasic;
 using MockupImageProccessing.Extension;
@@ -64,17 +65,26 @@ public class ImageSeparationViewModel : ViewModelBase
         Description = "Mask out image using predefined geometry path";
         OpenImageBrowserCommand = new AsyncRelayCommand(BrowseImage);
         ProcessImageCommand = new AsyncRelayCommand(ProcessImage);
+        StopCommand = new RelayCommand(Stop);
         OpenSelectOutputDirectoryCommand = new AsyncRelayCommand(SelectOutputFolder);
         Prefix = "MIP";
         var path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
         OutputDirectory = Path.Combine(path, "MIPOutput");
         Directory.CreateDirectory(OutputDirectory);
+
+    }
+
+    private bool _shouldBeRunning = false;
+    private void Stop()
+    {
+        _shouldBeRunning =false;
     }
 
 
     private async Task ProcessImage()
     {
         IsRendering = true;
+        _shouldBeRunning = true;
         var timer = new Stopwatch();
         timer.Start();
         var imageProcessor = new ImageBackgroundSeparatorService();
@@ -84,6 +94,10 @@ public class ImageSeparationViewModel : ViewModelBase
         var size = new Size(ImageSizeWidth, ImageSizeHeight);
         foreach (var image in _selectedImages)
         {
+            if(!_shouldBeRunning)
+                break;
+            CurrentProgress = (int)((count* 100d/(double)_selectedImages.Count) );
+            TimeElapsed = count+"/"+_selectedImages.Count + " " +"exported";
             var result = await Task.Run(() => imageProcessor.ProcessImage(image, ShowContour, ShowRectangle,
                 _right2BotRatio, _left2TopRatio, _whRatio, size));
             DisplayImage = result.ConvertToAvaloniaBitmap();
@@ -319,4 +333,17 @@ public class ImageSeparationViewModel : ViewModelBase
             OnPropertyChanged();
         }
     }
+
+    private int _currentProgress;
+    public int CurrentProgress
+    {
+        get => _currentProgress;
+        set
+        {
+            _currentProgress = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public ICommand StopCommand { get; set; }
 }
