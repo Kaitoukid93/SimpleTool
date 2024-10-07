@@ -76,7 +76,6 @@ public class ImageBackgroundSeparatorService
             if (area > maxArea)
             {
                 maxArea = area;
-                maxContourIndex = i;
                 largestContours.Insert(0, i);
             }
         }
@@ -94,9 +93,10 @@ public class ImageBackgroundSeparatorService
             }
                 
         }
-        if (maxContourIndex >= 0)
+
+        if (minXIndex >= 0)
         {
-            var outline = contours[maxContourIndex].ToArray();
+            var outline = contours[largestContours[minXIndex]].ToArray();
             return outline;
         }
         return null;
