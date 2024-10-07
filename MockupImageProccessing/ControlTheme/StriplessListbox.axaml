@@ -1,0 +1,363 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    x:CompileBindings="True">
+    <Design.PreviewWith>
+        <Border Padding="20">
+            <ListBox SelectedIndex="0">
+                <ListBoxItem>Test</ListBoxItem>
+                <ListBoxItem>Test</ListBoxItem>
+                <ListBoxItem>Test</ListBoxItem>
+                <ListBoxItem>Test</ListBoxItem>
+            </ListBox>
+        </Border>
+    </Design.PreviewWith>
+
+    <!-- ListBox comes from WinUI ListBox style -->
+    <ControlTheme TargetType="ListBox" x:Key="_striplessListbox">
+        <Setter Property="Foreground" Value="{DynamicResource ListBoxForeground}" />
+        <Setter Property="Background" Value="{DynamicResource ListBoxBackground}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource ListBoxBorder}" />
+        <Setter Property="BorderThickness" Value="{DynamicResource ListBoxBorderThemeThickness}" />
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
+        <Setter Property="ScrollViewer.IsScrollChainingEnabled" Value="True" />
+        <Setter Property="ScrollViewer.IsScrollInertiaEnabled" Value="True" />
+        <Setter Property="FontSize" Value="{DynamicResource ControlContentThemeFontSize}" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border Name="border" BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}">
+                    <ItemsPresenter Name="PART_ItemsPresenter"
+                                    ItemsPanel="{TemplateBinding ItemsPanel}"
+                                    Margin="{TemplateBinding Padding}" />
+                </Border>
+            </ControlTemplate>
+        </Setter>
+    </ControlTheme>
+
+    <!-- 
+    ListBoxItem styles use the WinUI ListViewItem style, however, WinUI is missing a bunch of 
+    necessary parts in their public release... (primarily missing ListViewItemPresenter style)
+    So, this is faked to look like what it should
+    Use the 21h1 Styles!
+    -->
+      <ControlTheme TargetType="ListBoxItem" x:Key="_optionsListboxItem">
+        <Setter Property="FontFamily" Value="{DynamicResource ContentControlThemeFontFamily}" />
+        <Setter Property="FontSize" Value="{DynamicResource ControlContentThemeFontSize}" />
+        <Setter Property="Background" Value="{DynamicResource ListViewItemBackground}" />
+        <Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
+        <Setter Property="Foreground" Value="{DynamicResource ListViewItemForeground}" />
+        <Setter Property="Padding" Value="5" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="VerticalContentAlignment" Value="Stretch" />
+        <Setter Property="MinWidth" Value="5" />
+        <Setter Property="MinHeight" Value="5" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Panel>
+                    <ContentPresenter Name="PART_ContentPresenter"
+                                      Background="{TemplateBinding Background}"
+                                      BorderBrush="{TemplateBinding BorderBrush}"
+                                      BorderThickness="{TemplateBinding BorderThickness}"
+                                      ContentTemplate="{TemplateBinding ContentTemplate}"
+                                      Content="{TemplateBinding Content}"
+                                      Padding="{TemplateBinding Padding}"
+                                      VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                      HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                      CornerRadius="{TemplateBinding CornerRadius}"
+                                      Margin="2" />
+
+                </Panel>
+            </ControlTemplate>
+        </Setter>
+        
+        <Style Selector="^:disabled">
+            <!-- There's no Disabled brush for LVI, so just dim opacity -->
+            <Setter Property="Opacity" Value="0.5" />
+        </Style>
+
+        <Style Selector="^:pointerover">
+            <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
+                <Setter Property="Background" Value="{DynamicResource ListViewItemBackgroundPointerOver}" />
+            </Style>
+            <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
+                <Setter Property="Foreground" Value="{DynamicResource ListViewItemForegroundPointerOver}" />
+            </Style>
+        </Style>
+
+        <Style Selector="^:pressed">
+            <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
+                <Setter Property="Background" Value="{DynamicResource AccentButtonBackground}" />
+            </Style>
+            <Style Selector="^ /template/ ContentPresenter">
+                <Setter Property="Foreground" Value="{DynamicResource ListViewItemForegroundPressed}" />
+            </Style>
+        </Style>
+
+        <Style Selector="^:selected">
+            <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
+                <Setter Property="Background" Value="{DynamicResource AccentButtonBackground}" />
+            </Style>
+            <Style Selector="^ /template/ ContentPresenter">
+                <Setter Property="Foreground" Value="{DynamicResource AccentButtonForeground}" />
+            </Style>
+
+            <Style Selector="^:not(:focus) /template/ ContentPresenter#PART_ContentPresenter">
+                <Setter Property="Background" Value="{DynamicResource ListViewItemBackgroundSelected}" />
+            </Style>
+            <Style Selector="^:not(:focus) /template/ ContentPresenter#PART_ContentPresenter">
+                <Setter Property="Foreground" Value="{DynamicResource ListViewItemForegroundSelected}" />
+            </Style>
+
+
+            <Style Selector="^:pointerover">
+                <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
+                    <Setter Property="Background" Value="{DynamicResource AccentButtonBackground}" />
+                </Style>
+                <Style Selector="^ /template/ ContentPresenter">
+                    <Setter Property="Foreground" Value="{DynamicResource AccentButtonForeground}" />
+                </Style>
+
+            </Style>
+
+            <Style Selector="^:pressed">
+                <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
+                    <Setter Property="Background" Value="{DynamicResource AccentButtonBackground}" />
+                </Style>
+                <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
+                    <Setter Property="Foreground" Value="{DynamicResource AccentButtonForegroundPressed}" />
+                </Style>
+
+            </Style>
+
+
+        </Style>
+    </ControlTheme>
+    <ControlTheme TargetType="ListBoxItem" x:Key="_striplessListboxItem">
+        <Setter Property="FontFamily" Value="{DynamicResource ContentControlThemeFontFamily}" />
+        <Setter Property="FontSize" Value="{DynamicResource ControlContentThemeFontSize}" />
+        <Setter Property="Background" Value="{DynamicResource ListViewItemBackground}" />
+        <Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
+        <Setter Property="Foreground" Value="{DynamicResource ListViewItemForeground}" />
+        <Setter Property="Padding" Value="10,4,10,5" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="VerticalContentAlignment" Value="Stretch" />
+        <Setter Property="MinWidth" Value="5" />
+        <Setter Property="MinHeight" Value="5" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Panel>
+                    <ContentPresenter Name="PART_ContentPresenter"
+                                      Background="{TemplateBinding Background}"
+                                      BorderBrush="{TemplateBinding BorderBrush}"
+                                      BorderThickness="{TemplateBinding BorderThickness}"
+                                      ContentTemplate="{TemplateBinding ContentTemplate}"
+                                      Content="{TemplateBinding Content}"
+                                      Padding="{TemplateBinding Padding}"
+                                      VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                      HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                      CornerRadius="{TemplateBinding CornerRadius}"
+                                      Margin="2" />
+
+                </Panel>
+            </ControlTemplate>
+        </Setter>
+        
+        <Style Selector="^:disabled">
+            <!-- There's no Disabled brush for LVI, so just dim opacity -->
+            <Setter Property="Opacity" Value="0.5" />
+        </Style>
+
+        <Style Selector="^:pointerover">
+            <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
+                <Setter Property="Background" Value="{DynamicResource ListViewItemBackgroundPointerOver}" />
+            </Style>
+            <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
+                <Setter Property="Foreground" Value="{DynamicResource ListViewItemForegroundPointerOver}" />
+            </Style>
+        </Style>
+
+        <Style Selector="^:pressed">
+            <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
+                <Setter Property="Background" Value="{DynamicResource ListViewItemBackgroundPressed}" />
+            </Style>
+            <Style Selector="^ /template/ ContentPresenter">
+                <Setter Property="Foreground" Value="{DynamicResource ListViewItemForegroundPressed}" />
+            </Style>
+        </Style>
+
+        <Style Selector="^:selected">
+            <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
+                <Setter Property="Background" Value="{DynamicResource ListViewItemBackgroundSelected}" />
+            </Style>
+            <Style Selector="^ /template/ ContentPresenter">
+                <Setter Property="Foreground" Value="{DynamicResource ListViewItemForegroundSelected}" />
+            </Style>
+
+            <Style Selector="^:not(:focus) /template/ ContentPresenter#PART_ContentPresenter">
+                <Setter Property="Background" Value="{DynamicResource ListViewItemBackgroundSelected}" />
+            </Style>
+            <Style Selector="^:not(:focus) /template/ ContentPresenter#PART_ContentPresenter">
+                <Setter Property="Foreground" Value="{DynamicResource ListViewItemForegroundSelected}" />
+            </Style>
+
+
+            <Style Selector="^:pointerover">
+                <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
+                    <Setter Property="Background" Value="{DynamicResource ListViewItemBackgroundSelectedPointerOver}" />
+                </Style>
+                <Style Selector="^ /template/ ContentPresenter">
+                    <Setter Property="Foreground" Value="{DynamicResource ListViewItemForegroundSelectedPointerOver}" />
+                </Style>
+
+            </Style>
+
+            <Style Selector="^:pressed">
+                <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
+                    <Setter Property="Background" Value="{DynamicResource ListViewItemBackgroundSelectedPressed}" />
+                </Style>
+                <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
+                    <Setter Property="Foreground" Value="{DynamicResource ListViewItemForegroundSelectedPressed}" />
+                </Style>
+
+            </Style>
+
+
+        </Style>
+    </ControlTheme>
+    <ControlTheme TargetType="ListBoxItem" x:Key="_rightStripListboxItem">
+        <Setter Property="FontFamily" Value="{DynamicResource ContentControlThemeFontFamily}" />
+        <Setter Property="FontSize" Value="{DynamicResource ControlContentThemeFontSize}" />
+        <Setter Property="Background" Value="{DynamicResource ListViewItemBackground}" />
+        <Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
+        <Setter Property="Foreground" Value="{DynamicResource ListViewItemForeground}" />
+        <Setter Property="Padding" Value="0,0,0,0" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="VerticalContentAlignment" Value="Stretch" />
+        <Setter Property="MinWidth" Value="5" />
+        <Setter Property="MinHeight" Value="5" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Panel>
+                    <Rectangle Name="SelectionIndicator"
+                               HorizontalAlignment="Stretch"
+                               VerticalAlignment="Stretch"
+                               Width="{TemplateBinding Width}" Height="{TemplateBinding Height}"
+                               Margin="0 2 0 2"
+                               UseLayoutRounding="False"
+                               RadiusX="4" RadiusY="4"
+                               IsVisible="False"
+                               RenderTransform="scaleY(0)"
+                               Fill="Transparent"
+                               StrokeThickness="1"
+                               Stroke="{DynamicResource AccentFillColorDefaultBrush}">
+
+                        <Rectangle.Transitions>
+                            <Transitions>
+                                <TransformOperationsTransition Duration="00:00:00.167"
+                                                               Property="RenderTransform"
+                                                               Easing="0,0 0,1" />
+                            </Transitions>
+                        </Rectangle.Transitions>
+                    </Rectangle>
+                    <ContentPresenter Name="PART_ContentPresenter"
+                                      Background="{TemplateBinding Background}"
+                                      BorderBrush="{TemplateBinding BorderBrush}"
+                                      BorderThickness="{TemplateBinding BorderThickness}"
+                                      ContentTemplate="{TemplateBinding ContentTemplate}"
+                                      Content="{TemplateBinding Content}"
+                                      Padding="{TemplateBinding Padding}"
+                                      VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                      HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                      CornerRadius="{TemplateBinding CornerRadius}"
+                                      Margin="0,2,0,2" />
+
+                </Panel>
+            </ControlTemplate>
+        </Setter>
+
+        <Style Selector="^:disabled">
+            <!-- There's no Disabled brush for LVI, so just dim opacity -->
+            <Setter Property="Opacity" Value="0.5" />
+        </Style>
+
+        <Style Selector="^:pointerover">
+            <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
+                <Setter Property="Background" Value="Transparent" />
+            </Style>
+            <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
+                <Setter Property="Foreground" Value="{DynamicResource ListViewItemForegroundPointerOver}" />
+            </Style>
+            <Style Selector="^ /template/ Rectangle#SelectionIndicator">
+                <Setter Property="IsVisible" Value="True" />
+                <Setter Property="RenderTransform" Value="scaleY(1)" />
+                <Setter Property="Stroke" Value="{DynamicResource  ButtonBorderBrush}" />
+            </Style>
+        </Style>
+
+        <Style Selector="^:pressed">
+            <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
+                <Setter Property="Background" Value="{DynamicResource ListViewItemBackgroundPressed}" />
+            </Style>
+            <Style Selector="^ /template/ ContentPresenter">
+                <Setter Property="Foreground" Value="{DynamicResource ListViewItemForegroundPressed}" />
+            </Style>
+            <Style Selector="^ /template/ Rectangle#SelectionIndicator">
+                <Setter Property="IsVisible" Value="True" />
+                <Setter Property="Stroke" Value="{DynamicResource  AccentFillColorDefaultBrush}" />
+            </Style>
+        </Style>
+
+        <Style Selector="^:selected">
+            <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
+                <Setter Property="Background" Value="Transparent" />
+            </Style>
+            <Style Selector="^ /template/ ContentPresenter">
+                <Setter Property="Foreground" Value="{DynamicResource ListViewItemForegroundSelected}" />
+            </Style>
+            <Style Selector="^ /template/ Rectangle#SelectionIndicator">
+                <Setter Property="IsVisible" Value="True" />
+                <Setter Property="RenderTransform" Value="scaleY(1)" />
+                <Setter Property="Stroke" Value="{DynamicResource  AccentFillColorDefaultBrush}" />
+            </Style>
+            <Style Selector="^:not(:focus) /template/ ContentPresenter#PART_ContentPresenter">
+                <Setter Property="Background" Value="Transparent" />
+            </Style>
+            <Style Selector="^:not(:focus) /template/ ContentPresenter#PART_ContentPresenter">
+                <Setter Property="Foreground" Value="{DynamicResource ListViewItemForegroundSelected}" />
+            </Style>
+
+
+            <Style Selector="^:pointerover">
+                <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
+                    <Setter Property="Background" Value="Transparent" />
+                </Style>
+                <Style Selector="^ /template/ ContentPresenter">
+                    <Setter Property="Foreground" Value="{DynamicResource ListViewItemForegroundSelectedPointerOver}" />
+                </Style>
+                <Style Selector="^ /template/ Rectangle#SelectionIndicator">
+                    <Setter Property="Fill" Value="Transparent" />
+                </Style>
+
+            </Style>
+
+            <Style Selector="^:pressed">
+                <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
+                    <Setter Property="Background" Value="Transparent" />
+                </Style>
+                <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
+                    <Setter Property="Foreground" Value="{DynamicResource ListViewItemForegroundSelectedPressed}" />
+                </Style>
+                <Style Selector="^ /template/ Rectangle#SelectionIndicator">
+                    <Setter Property="Fill" Value="Transparent" />
+                    <!-- TODO: Uncomment when Avalonia fixes selection to work on pointer up -->
+                    <!--<Setter Property="RenderTransform" Value="scaleY(0.5)" />-->
+                </Style>
+            </Style>
+
+            <Style Selector="^:disabled /template/ Rectangle#SelectionIndicator">
+                <Setter Property="Fill" Value="{DynamicResource ListViewItemSelectionIndicatorDisabledBrush}" />
+            </Style>
+        </Style>
+    </ControlTheme>
+</ResourceDictionary>

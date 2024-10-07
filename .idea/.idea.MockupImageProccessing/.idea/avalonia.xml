@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AvaloniaProject">
+    <option name="projectPerEditor">
+      <map>
+        <entry key="MockupImageProccessing/App.axaml" value="MockupImageProccessing/MockupImageProccessing.csproj" />
+        <entry key="MockupImageProccessing/ControlTheme/BorderlessNumberbox.axaml" value="MockupImageProccessing/MockupImageProccessing.csproj" />
+        <entry key="MockupImageProccessing/Views/AboutView.axaml" value="MockupImageProccessing/MockupImageProccessing.csproj" />
+        <entry key="MockupImageProccessing/Views/GeometryCollection/GeometryCollection.axaml" value="MockupImageProccessing/MockupImageProccessing.csproj" />
+        <entry key="MockupImageProccessing/Views/ImageSeparationView.axaml" value="MockupImageProccessing/MockupImageProccessing.csproj" />
+        <entry key="MockupImageProccessing/Views/MainWindow.axaml" value="MockupImageProccessing/MockupImageProccessing.csproj" />
+        <entry key="MockupImageProccessing/Views/NonClientAreaContentView.axaml" value="MockupImageProccessing/MockupImageProccessing.csproj" />
+        <entry key="MockupImageProccessing/Views/SideMenuItemView.axaml" value="MockupImageProccessing/MockupImageProccessing.csproj" />
+      </map>
+    </option>
+  </component>
+</project>

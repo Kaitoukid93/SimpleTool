@@ -1,0 +1,25 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             xmlns:vm ="clr-namespace:MockupImageProccessing.ViewModels"
+             x:DataType="vm:AboutViewModel"
+             x:Class="MockupImageProccessing.Views.AboutView">
+    <Grid RowDefinitions="Auto,20,*">
+        <TextBlock Text="About" FontWeight="SemiBold" FontSize="25"></TextBlock>
+        <Grid Row="2" RowDefinitions="Auto,130,*">
+            <TextBlock HorizontalAlignment="Center" FontSize="25" FontWeight="SemiBold" Text="Simple Tool"></TextBlock>
+            <Grid Row="1">
+                <PathIcon Height="80" Width="80" Data="{DynamicResource flip_horizontal}"></PathIcon>
+            </Grid>
+            <StackPanel HorizontalAlignment="Center" Spacing="5" Grid.Row="2">
+                <TextBlock HorizontalAlignment="Center" Text="Version 1.0.0"></TextBlock>
+                <TextBlock HorizontalAlignment="Center"  Text="Author: Zoe"></TextBlock>
+                <TextBlock HorizontalAlignment="Center" Text="Release date: 7/10/2024"></TextBlock>
+                <HyperlinkButton Padding="0" HorizontalAlignment="Center" Content="GitHub repository"></HyperlinkButton>
+            </StackPanel>
+        </Grid>
+    </Grid>
+    
+</UserControl>

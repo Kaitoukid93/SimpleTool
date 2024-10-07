@@ -1,0 +1,397 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             xmlns:vm="clr-namespace:MockupImageProccessing.ViewModels"
+
+             xmlns:ui="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+             x:DataType="vm:ImageSeparationViewModel"
+             x:Class="MockupImageProccessing.Views.ImageSeparationView">
+    <UserControl.Resources>
+        <ControlTheme TargetType="TextBox" x:Key="{x:Type TextBox}">
+            <Setter Property="Foreground" Value="{DynamicResource TextControlForeground}" />
+            <Setter Property="Background" Value="{DynamicResource TextControlBackground}" />
+            <Setter Property="CaretBrush" Value="{DynamicResource TextControlForeground}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource TextControlBorderBrush}" />
+            <Setter Property="SelectionBrush" Value="{DynamicResource TextControlSelectionHighlightColor}" />
+            <Setter Property="SelectionForegroundBrush"
+                    Value="{DynamicResource TextOnAccentFillColorSelectedTextBrush}" />
+            <Setter Property="BorderThickness" Value="{DynamicResource TextControlBorderThemeThickness}" />
+            <Setter Property="FontSize" Value="{DynamicResource ControlContentThemeFontSize}" />
+            <Setter Property="MinHeight" Value="{DynamicResource TextControlThemeMinHeight}" />
+            <Setter Property="MinWidth" Value="{DynamicResource TextControlThemeMinWidth}" />
+            <Setter Property="Padding" Value="{DynamicResource TextControlThemePadding}" />
+            <Setter Property="FocusAdorner" Value="{x:Null}" />
+            <Setter Property="ContextFlyout" Value="{StaticResource DefaultTextBoxContextFlyout}" />
+            <Setter Property="ScrollViewer.IsScrollChainingEnabled" Value="True" />
+            <Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <DataValidationErrors>
+                        <Panel>
+                            <Border Name="PART_BorderElement"
+                                    Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="0"
+                                    CornerRadius="{TemplateBinding CornerRadius}"
+                                    MinWidth="{TemplateBinding MinWidth}"
+                                    MinHeight="{TemplateBinding MinHeight}">
+                            </Border>
+
+                            <Border Margin="{TemplateBinding BorderThickness}">
+                                <Grid ColumnDefinitions="Auto,*,Auto">
+                                    <ContentPresenter Grid.Column="0"
+                                                      Grid.ColumnSpan="1"
+                                                      Content="{TemplateBinding InnerLeftContent}" />
+                                    <DockPanel x:Name="PART_InnerDockPanel"
+                                               Grid.Column="1"
+                                               Grid.ColumnSpan="1"
+                                               Cursor="IBeam"
+                                               Margin="{TemplateBinding Padding}">
+                                        <TextBlock Name="PART_FloatingWatermark"
+                                                   Foreground="{DynamicResource SystemAccentColor}"
+                                                   FontSize="{TemplateBinding FontSize}"
+                                                   IsVisible="False"
+                                                   Text="{TemplateBinding Watermark}"
+                                                   DockPanel.Dock="Top" />
+                                        <ScrollViewer
+                                            HorizontalScrollBarVisibility="{TemplateBinding (ScrollViewer.HorizontalScrollBarVisibility)}"
+                                            VerticalScrollBarVisibility="{TemplateBinding (ScrollViewer.VerticalScrollBarVisibility)}"
+                                            IsScrollChainingEnabled="{TemplateBinding (ScrollViewer.IsScrollChainingEnabled)}"
+                                            AllowAutoHide="{TemplateBinding (ScrollViewer.AllowAutoHide)}">
+                                            <Panel>
+                                                <TextBlock Name="PART_Watermark"
+                                                           Foreground="{DynamicResource TextControlPlaceholderForeground}"
+                                                           Text="{TemplateBinding Watermark}"
+                                                           TextAlignment="{TemplateBinding TextAlignment}"
+                                                           TextWrapping="{TemplateBinding TextWrapping}"
+                                                           IsVisible="{TemplateBinding Text, Converter={x:Static StringConverters.IsNullOrEmpty}}"
+                                                           HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                           VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                                                <TextPresenter Name="PART_TextPresenter"
+                                                               Text="{TemplateBinding Text, Mode=TwoWay}"
+                                                               CaretIndex="{TemplateBinding CaretIndex}"
+                                                               SelectionStart="{TemplateBinding SelectionStart}"
+                                                               SelectionEnd="{TemplateBinding SelectionEnd}"
+                                                               TextAlignment="{TemplateBinding TextAlignment}"
+                                                               TextWrapping="{TemplateBinding TextWrapping}"
+                                                               LineHeight="{TemplateBinding LineHeight}"
+                                                               LetterSpacing="{TemplateBinding LetterSpacing}"
+                                                               PasswordChar="{TemplateBinding PasswordChar}"
+                                                               RevealPassword="{TemplateBinding RevealPassword}"
+                                                               SelectionBrush="{TemplateBinding SelectionBrush}"
+                                                               SelectionForegroundBrush="{TemplateBinding SelectionForegroundBrush}"
+                                                               CaretBrush="{TemplateBinding CaretBrush}"
+                                                               HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                               VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                                            </Panel>
+                                        </ScrollViewer>
+                                    </DockPanel>
+                                    <ContentPresenter Grid.Column="2"
+                                                      Grid.ColumnSpan="1"
+                                                      Content="{TemplateBinding InnerRightContent}" />
+                                </Grid>
+                            </Border>
+                        </Panel>
+                    </DataValidationErrors>
+                </ControlTemplate>
+            </Setter>
+
+            <!-- Disabled State -->
+            <Style Selector="^:disabled">
+                <Setter Property="Foreground" Value="{DynamicResource TextControlForegroundDisabled}" />
+
+                <Style Selector="^ /template/ Border#PART_BorderElement">
+                    <Setter Property="Background" Value="{DynamicResource TextControlBackgroundDisabled}" />
+                    <Setter Property="BorderBrush" Value="{DynamicResource TextControlBorderBrushDisabled}" />
+                </Style>
+
+                <Style Selector="^ /template/ TextBlock#PART_Watermark, ^ /template/ TextBlock#PART_FloatingWatermark">
+                    <Setter Property="Foreground" Value="{DynamicResource TextControlPlaceholderForegroundDisabled}" />
+                </Style>
+            </Style>
+
+            <!-- PointerOver State-->
+            <Style Selector="^:pointerover">
+                <Setter Property="Foreground" Value="{DynamicResource TextControlForegroundPointerOver}" />
+
+                <Style Selector="^ /template/ Border#PART_BorderElement">
+                    <Setter Property="BorderBrush" Value="{DynamicResource TextControlBorderBrushPointerOver}" />
+                    <Setter Property="Background" Value="{DynamicResource TextControlBackgroundPointerOver}" />
+                </Style>
+
+                <Style Selector="^ /template/ TextBlock#PART_Watermark">
+                    <Setter Property="Foreground" Value="{DynamicResource TextControlPlaceholderForegroundPointerOver}" />
+                </Style>
+            </Style>
+
+            <!-- Focused State -->
+            <Style Selector="^:focus">
+                <Setter Property="Foreground" Value="{DynamicResource TextControlForegroundFocused}" />
+
+                <Style Selector="^ /template/ TextBlock#PART_Watermark">
+                    <Setter Property="Foreground" Value="{DynamicResource TextControlPlaceholderForegroundFocused}" />
+                </Style>
+
+                <Style Selector="^ /template/ Border#PART_BorderElement">
+                    <Setter Property="Background" Value="{DynamicResource TextControlBackgroundFocused}" />
+                    <Setter Property="BorderBrush" Value="{DynamicResource AccentButtonBackground}" />
+                    <Setter Property="BorderThickness" Value="1" />
+                </Style>
+            </Style>
+
+            <Style Selector="^:error /template/ Border#PART_BorderElement">
+                <Setter Property="BorderBrush" Value="{DynamicResource SystemFillColorCriticalBrush}" />
+            </Style>
+
+            <Style Selector="^[UseFloatingWatermark=true]:not(:empty) /template/ TextBlock#PART_FloatingWatermark">
+                <Setter Property="IsVisible" Value="True" />
+            </Style>
+
+            <Style Selector="^.revealPasswordButton[AcceptsReturn=False][IsReadOnly=False]:not(TextBox:empty)">
+                <Setter Property="InnerRightContent">
+                    <Template>
+                        <ToggleButton Theme="{StaticResource TextBoxPasswordButtonStyle}"
+                                      BorderThickness="{TemplateBinding BorderThickness}"
+                                      CornerRadius="{DynamicResource ControlCornerRadius}"
+                                      Padding="{StaticResource HelperButtonThemePadding}"
+                                      IsTabStop="False"
+                                      Focusable="False"
+                                      FontSize="{TemplateBinding FontSize}"
+                                      Width="30"
+                                      VerticalAlignment="Stretch"
+                                      IsChecked="{Binding $parent[TextBox].RevealPassword, Mode=TwoWay}" />
+                    </Template>
+                </Setter>
+            </Style>
+
+            <Style Selector="^.clearButton[AcceptsReturn=False][IsReadOnly=False]:focus:not(TextBox:empty)">
+                <Setter Property="InnerRightContent">
+                    <Template>
+                        <Button Theme="{StaticResource TextBoxDeleteButtonStyle}"
+                                Command="{Binding $parent[TextBox].Clear}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="{DynamicResource ControlCornerRadius}"
+                                Padding="{StaticResource HelperButtonThemePadding}"
+                                IsTabStop="False"
+                                Focusable="False"
+                                FontSize="{TemplateBinding FontSize}"
+                                Width="30"
+                                VerticalAlignment="Stretch" />
+                    </Template>
+                </Setter>
+            </Style>
+        </ControlTheme>
+    </UserControl.Resources>
+    <Grid RowDefinitions="Auto,20,*">
+        <TextBlock HorizontalAlignment="Left" Text="Mockup image processing" FontWeight="SemiBold" FontSize="25"></TextBlock>
+        <Grid Row="2" ColumnDefinitions="Auto,10,*">
+            <Grid Column="0">
+                <Border VerticalAlignment="Top" CornerRadius="10" BorderBrush="{DynamicResource ButtonBorderBrush}"
+                        BorderThickness="0"
+                        Width="800">
+                    <Grid>
+                        <TextBlock FontSize="25" Foreground="{DynamicResource ButtonForegroundDisabled}"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center"
+                                   IsVisible="{Binding ShowNoImageText}" Text="No image selected">
+                        </TextBlock>
+                        <TextBlock FontSize="25" Foreground="{DynamicResource ButtonForegroundDisabled}"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center"
+                                   IsVisible="{Binding !ShowNoImageText}" Text="Click Render to start">
+                        </TextBlock>
+                        <Image Height="800" Stretch="Uniform" Source="{Binding DisplayImage}"></Image>
+                    </Grid>
+                </Border>
+
+            </Grid>
+
+            <Grid Grid.Column="2" IsEnabled="{Binding !IsRendering}" RowDefinitions="*,Auto">
+                <ScrollViewer IsScrollInertiaEnabled="True">
+                    <Grid>
+                        <StackPanel Spacing="20">
+                            <StackPanel Spacing="8">
+                                <TextBlock Text="Select images" FontWeight="SemiBold"></TextBlock>
+                                <TextBox VerticalContentAlignment="Center" Text="{Binding ImagesPath}">
+                                    <TextBox.InnerRightContent>
+                                        <Button Width="70" Command="{Binding OpenImageBrowserCommand}" Margin="5"
+                                                Content="Browse"
+                                                Padding="5">
+                                        </Button>
+                                    </TextBox.InnerRightContent>
+                                </TextBox>
+                            </StackPanel>
+                            <StackPanel Spacing="8">
+                                <TextBlock Text="Select output folder" FontWeight="SemiBold"></TextBlock>
+                                <StackPanel Spacing="2">
+                                    <TextBox VerticalContentAlignment="Center" Text="{Binding OutputDirectory}">
+                                        <TextBox.InnerRightContent>
+                                            <Button Width="70" Command="{Binding OpenSelectOutputDirectoryCommand}"
+                                                    Margin="5" Content="Select"
+                                                    Padding="5">
+                                            </Button>
+                                        </TextBox.InnerRightContent>
+                                    </TextBox>
+                                    <CheckBox IsChecked="{Binding OpenOutputDirectory}" Margin="5,0,0,0"
+                                              Content="Open output folder after rendering process is finished">
+                                    </CheckBox>
+                                </StackPanel>
+
+                            </StackPanel>
+                            <StackPanel Spacing="8">
+                                <TextBlock Text="Naming prefix" FontWeight="SemiBold"></TextBlock>
+
+                                <StackPanel Spacing="2">
+                                    <TextBox IsEnabled="{Binding !UseOriginalName}" VerticalContentAlignment="Center" Text="{Binding Prefix}">
+
+                                    </TextBox>
+                                    <ui:InfoBar Title="Note" IsOpen="True" Severity="Informational"
+                                                Message="this prefix will be used to name output files: [Prefix]-01..." >
+                                        <ToggleSwitch IsChecked="{Binding UseOriginalName}" Margin="0,0,0,10" Content="Use original name instead, make sure folder is empty"></ToggleSwitch>
+                                    </ui:InfoBar>
+                                </StackPanel>
+
+                            </StackPanel>
+                            <StackPanel Spacing="8">
+                                <TextBlock Text="Advance settings" FontWeight="SemiBold"></TextBlock>
+                                <StackPanel Spacing="2">
+                                    <ui:SettingsExpander Header="Performance settings"
+                                                         Description="Adjust to get best result/performance">
+                                        <ui:SettingsExpander.IconSource>
+                                            <ui:PathIconSource Data="{DynamicResource performance}"></ui:PathIconSource>
+                                        </ui:SettingsExpander.IconSource>
+                                        <ui:SettingsExpanderItem MinWidth="500" Content="Image size"
+                                                                 Description="Consider saving image to SSD to boost up rendering process"
+                                                                 IsClickEnabled="False">
+                                            <ui:SettingsExpanderItem.Footer>
+                                                <StackPanel Orientation="Horizontal" Spacing="8">
+                                                    <ui:NumberBox Value="{Binding ImageSizeWidth}"
+                                                                  SimpleNumberFormat="F0"
+                                                                  Theme="{DynamicResource borderlessNumberBox}"
+                                                                  Minimum="100"
+                                                                  Maximum="2000">
+                                                    </ui:NumberBox>
+                                                    <TextBlock Text="x" HorizontalAlignment="Center"
+                                                               VerticalAlignment="Center"
+                                                               Foreground="{DynamicResource ButtonForegroundDisabled}">
+                                                    </TextBlock>
+                                                    <ui:NumberBox Value="{Binding ImageSizeHeight}"
+                                                                  SimpleNumberFormat="F0"
+                                                                  Theme="{DynamicResource borderlessNumberBox}"
+                                                                  Minimum="100"
+                                                                  Maximum="2000">
+                                                    </ui:NumberBox>
+                                                </StackPanel>
+                                            </ui:SettingsExpanderItem.Footer>
+                                        </ui:SettingsExpanderItem>
+                                        <ui:SettingsExpanderItem MinWidth="500" Content="Limit CPU usage"
+                                                                 Description="Cpu usage will be limited by adjusting sleep time between image processing"
+                                                                 IsClickEnabled="False">
+                                            <ui:SettingsExpanderItem.Footer>
+                                                <Slider Value="{Binding Interval}" Width="160" Minimum="10"
+                                                        Maximum="2000">
+                                                </Slider>
+                                            </ui:SettingsExpanderItem.Footer>
+                                        </ui:SettingsExpanderItem>
+                                    </ui:SettingsExpander>
+                                    <ui:SettingsExpander Header="Debug settings"
+                                                         Description="Show some useful information">
+                                        <ui:SettingsExpander.IconSource>
+                                            <ui:PathIconSource Data="{DynamicResource debug}"></ui:PathIconSource>
+                                        </ui:SettingsExpander.IconSource>
+                                        <ui:SettingsExpanderItem MinWidth="500" Content="Show contour"
+                                                                 Description="Show actual image contour that was processed"
+                                                                 IsClickEnabled="False">
+                                            <ui:SettingsExpanderItem.Footer>
+                                                <ToggleSwitch IsChecked="{Binding ShowContour}"></ToggleSwitch>
+                                            </ui:SettingsExpanderItem.Footer>
+                                        </ui:SettingsExpanderItem>
+                                        <ui:SettingsExpanderItem MinWidth="500" Content="Show rectangle"
+                                                                 Description="Show debug rectangle if you see shit happens"
+                                                                 IsClickEnabled="False">
+                                            <ui:SettingsExpanderItem.Footer>
+                                                <ToggleSwitch IsChecked="{Binding ShowRectangle}"></ToggleSwitch>
+                                            </ui:SettingsExpanderItem.Footer>
+                                        </ui:SettingsExpanderItem>
+                                    </ui:SettingsExpander>
+                                    <ui:SettingsExpander Header="Image specific value"
+                                                         Description="Adjust these values to match your image">
+                                        <ui:SettingsExpander.IconSource>
+                                            <ui:PathIconSource Data="{DynamicResource path}"></ui:PathIconSource>
+                                        </ui:SettingsExpander.IconSource>
+                                        <ui:SettingsExpanderItem MinWidth="500" Content="Right2BotRatio"
+                                                                 Description="The ratio represent most right point position relative to the bottom"
+                                                                 IsClickEnabled="False">
+                                            <ui:SettingsExpanderItem.Footer>
+                                                <StackPanel Orientation="Horizontal" Spacing="8">
+                                                    <ui:NumberBox Value="{Binding Right2BotRatio}"
+                                                                  SimpleNumberFormat="F10"
+                                                                  Theme="{DynamicResource borderlessNumberBox}"
+                                                                  Minimum="0"
+                                                                  Maximum="100">
+                                                    </ui:NumberBox>
+                                                </StackPanel>
+                                            </ui:SettingsExpanderItem.Footer>
+                                        </ui:SettingsExpanderItem>
+                                        <ui:SettingsExpanderItem MinWidth="500" Content="Left2TopRatio"
+                                                                 Description="The ratio represent top center  point position relative to the most left point"
+                                                                 IsClickEnabled="False">
+                                            <ui:SettingsExpanderItem.Footer>
+                                                <StackPanel Orientation="Horizontal" Spacing="8">
+                                                    <ui:NumberBox Value="{Binding Left2TopRatio}"
+                                                                  SimpleNumberFormat="F10"
+                                                                  Theme="{DynamicResource borderlessNumberBox}"
+                                                                  Minimum="0"
+                                                                  Maximum="100">
+                                                    </ui:NumberBox>
+                                                </StackPanel>
+                                            </ui:SettingsExpanderItem.Footer>
+                                        </ui:SettingsExpanderItem>
+                                        <ui:SettingsExpanderItem MinWidth="500" Content="WHRatio"
+                                                                 Description="The ratio represent width height ratio of the object"
+                                                                 IsClickEnabled="False">
+                                            <ui:SettingsExpanderItem.Footer>
+                                                <StackPanel Orientation="Horizontal" Spacing="8">
+                                                    <ui:NumberBox Value="{Binding WHRatio}" SimpleNumberFormat="F10"
+                                                                  Theme="{DynamicResource borderlessNumberBox}"
+                                                                  Minimum="0"
+                                                                  Maximum="100">
+                                                    </ui:NumberBox>
+                                                </StackPanel>
+                                            </ui:SettingsExpanderItem.Footer>
+                                        </ui:SettingsExpanderItem>
+                                        <ui:InfoBar Title="Warning" IsOpen="True" Severity="Warning"
+                                                    Message="These values is critical for the app to run correctly, use at your own risk!!!" />
+                                    </ui:SettingsExpander>
+
+
+                                </StackPanel>
+                            </StackPanel>
+
+
+                        </StackPanel>
+
+                    </Grid>
+                </ScrollViewer>
+                <Grid Row="1">
+                    <Button Margin="0,20,0,0" IsEnabled="{Binding CanRender}" Command="{Binding ProcessImageCommand}"
+                            Classes="accent" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                        <Grid ColumnDefinitions="auto,8,*">
+                            <PathIcon Width="13" Data="{DynamicResource playComposition}"></PathIcon>
+                            <TextBlock Text="Render" Grid.Column="2"></TextBlock>
+                        </Grid>
+
+                    </Button>
+                </Grid>
+
+            </Grid>
+
+
+            <Grid Column="2">
+                <ui:ProgressRing IsIndeterminate="True" IsVisible="{Binding IsRendering}" Width="80" Height="80"></ui:ProgressRing>
+            </Grid>
+        </Grid>
+
+    </Grid>
+
+</UserControl>

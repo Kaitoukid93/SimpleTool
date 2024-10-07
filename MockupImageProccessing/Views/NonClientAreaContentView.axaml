@@ -1,0 +1,14 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             xmlns:vm="clr-namespace:MockupImageProccessing.ViewModels"
+             x:DataType="vm:NonClientAreaContentViewModel"
+             x:Class="MockupImageProccessing.Views.NonClientAreaContentView">
+    <Grid Height="30" Margin="20,10" ColumnDefinitions="Auto,12,*">
+        <TextBlock VerticalAlignment="Center" Grid.Column="2" FontSize="11" Text="Simple Tool"></TextBlock>
+        <PathIcon VerticalAlignment="Center" Width="20" Height="20" Data="{DynamicResource flip_horizontal}"></PathIcon>
+    </Grid>
+   
+</UserControl>

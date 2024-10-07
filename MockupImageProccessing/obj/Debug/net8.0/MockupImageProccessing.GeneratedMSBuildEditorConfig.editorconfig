@@ -1,0 +1,51 @@
+is_global = true
+build_property.AvaloniaNameGeneratorIsEnabled = true
+build_property.AvaloniaNameGeneratorBehavior = InitializeComponent
+build_property.AvaloniaNameGeneratorDefaultFieldModifier = internal
+build_property.AvaloniaNameGeneratorFilterByPath = *
+build_property.AvaloniaNameGeneratorFilterByNamespace = *
+build_property.AvaloniaNameGeneratorViewFileNamingStrategy = NamespaceAndClassName
+build_property.AvaloniaNameGeneratorAttachDevTools = true
+build_property.MvvmToolkitEnableINotifyPropertyChangingSupport = true
+build_property.TargetFramework = net8.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = 
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = MockupImageProccessing
+build_property.ProjectDir = C:\Users\zOe\RiderProjects\MockupImageProccessing\MockupImageProccessing\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
+
+[C:/Users/zOe/RiderProjects/MockupImageProccessing/MockupImageProccessing/App.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
+[C:/Users/zOe/RiderProjects/MockupImageProccessing/MockupImageProccessing/ControlTheme/BorderlessNumberbox.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
+[C:/Users/zOe/RiderProjects/MockupImageProccessing/MockupImageProccessing/ControlTheme/StriplessListbox.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
+[C:/Users/zOe/RiderProjects/MockupImageProccessing/MockupImageProccessing/ControlTheme/TransparrentSettingsExpander.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
+[C:/Users/zOe/RiderProjects/MockupImageProccessing/MockupImageProccessing/Views/AboutView.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
+[C:/Users/zOe/RiderProjects/MockupImageProccessing/MockupImageProccessing/Views/GeometryCollection/GeometryCollection.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
+[C:/Users/zOe/RiderProjects/MockupImageProccessing/MockupImageProccessing/Views/ImageSeparationView.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
+[C:/Users/zOe/RiderProjects/MockupImageProccessing/MockupImageProccessing/Views/MainWindow.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
+[C:/Users/zOe/RiderProjects/MockupImageProccessing/MockupImageProccessing/Views/NonClientAreaContentView.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
+[C:/Users/zOe/RiderProjects/MockupImageProccessing/MockupImageProccessing/Views/SideMenuItemView.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
