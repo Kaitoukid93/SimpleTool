@@ -346,7 +346,7 @@
                                                                  IsClickEnabled="False">
                                             <ui:SettingsExpanderItem.Footer>
                                                 <Slider Value="{Binding Interval}" Width="160" Minimum="5"
-                                                        Maximum="100">
+                                                        Maximum="2000">
                                                 </Slider>
                                             </ui:SettingsExpanderItem.Footer>
                                         </ui:SettingsExpanderItem>

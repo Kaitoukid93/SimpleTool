@@ -17,7 +17,7 @@
                 <TextBlock HorizontalAlignment="Center" Text="Version 1.0.0"></TextBlock>
                 <TextBlock HorizontalAlignment="Center"  Text="Author: Zoe"></TextBlock>
                 <TextBlock HorizontalAlignment="Center" Text="Release date: 7/10/2024"></TextBlock>
-                <HyperlinkButton Padding="0" HorizontalAlignment="Center" Content="GitHub repository"></HyperlinkButton>
+                <HyperlinkButton NavigateUri="https://github.com/Kaitoukid93/SimpleTool.git" Padding="0" HorizontalAlignment="Center"  Content="GitHub repository"></HyperlinkButton>
             </StackPanel>
         </Grid>
     </Grid>
