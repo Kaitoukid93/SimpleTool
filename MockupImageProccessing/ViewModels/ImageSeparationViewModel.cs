@@ -71,61 +71,115 @@ public class ImageSeparationViewModel : ViewModelBase
         var path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
         OutputDirectory = Path.Combine(path, "MIPOutput");
         Directory.CreateDirectory(OutputDirectory);
-
     }
 
     private bool _shouldBeRunning = false;
+
     private void Stop()
     {
-        _shouldBeRunning =false;
+        _shouldBeRunning = false;
     }
 
 
     private async Task ProcessImage()
     {
+        ErrorImages = new List<string>();
+        ShowErrorMessage = false;
         IsRendering = true;
         _shouldBeRunning = true;
         var timer = new Stopwatch();
         timer.Start();
         var imageProcessor = new ImageBackgroundSeparatorService();
+        imageProcessor.ErrorOccured += OnErrorOccured;
         int count = 0;
         if (!Directory.Exists(OutputDirectory))
             Directory.CreateDirectory(OutputDirectory);
         var size = new Size(ImageSizeWidth, ImageSizeHeight);
         foreach (var image in _selectedImages)
         {
-            if(!_shouldBeRunning)
+            if (!_shouldBeRunning)
                 break;
-            CurrentProgress = (int)((count* 100d/(double)_selectedImages.Count) );
-            TimeElapsed = count+"/"+_selectedImages.Count + " " +"exported";
+            CurrentProgress = (int)((count * 100d / (double)_selectedImages.Count));
+            TimeElapsed = count + "/" + _selectedImages.Count + " " + "exported";
             var result = await Task.Run(() => imageProcessor.ProcessImage(image, ShowContour, ShowRectangle,
                 _right2BotRatio, _left2TopRatio, _whRatio, size));
+            if (result == null)
+            {
+                Console.WriteLine("Problem processing image, could be image with black background " + image);
+                continue;
+            }
+
             DisplayImage = result.ConvertToAvaloniaBitmap();
             var fileName = Prefix + "-" + count++ + ".jpg";
             if (UseOriginalName)
             {
                 fileName = Path.GetFileName(image);
             }
-           
+
             var filePath = Path.Combine(OutputDirectory, fileName);
             DisplayImage.Save(filePath);
             Thread.Sleep(Interval);
         }
 
         IsRendering = false;
-        
+
         //B: Run stuff you want timed
         timer.Stop();
         TimeSpan timeTaken = timer.Elapsed;
-        TimeElapsed = "Time taken: " + timeTaken.ToString(@"m\:ss\.fff"); 
+        TimeElapsed = "Time taken: " + timeTaken.ToString(@"m\:ss\.fff");
+
+        if (ErrorImages.Count > 0)
+        {
+            ErrorMessage = ErrorImages.Count + " Problems found!!!";
+            ShowErrorMessage = true;
+            System.IO.File.WriteAllLines(Path.Combine(OutputDirectory,"Error.txt"), ErrorImages);
+        }
         if (OpenOutputDirectory)
         {
             OpenDierectory(OutputDirectory);
         }
-        
+
         // DisplayImage = null;
     }
 
+    private List<string> _errorImages = new List<string>();
+
+    public List<String> ErrorImages
+    {
+        get => _errorImages;
+        set
+        {
+            _errorImages = value;
+            OnPropertyChanged();
+        }
+    }
+    private string _errorMessage ;
+
+    public string ErrorMessage
+    {
+        get => _errorMessage;
+        set
+        {
+            _errorMessage = value;
+            OnPropertyChanged();
+        }
+    }
+    private void OnErrorOccured(string obj)
+    {
+        ErrorImages.Add(obj);
+    }
+
+    private bool _showErrorMessage;
+
+    public bool ShowErrorMessage
+    {
+        get => _showErrorMessage;
+        set
+        {
+            _showErrorMessage = value;
+            OnPropertyChanged();
+        }
+    }
     private void OpenDierectory(string directory)
     {
         ProcessStartInfo startInfo = new ProcessStartInfo
@@ -153,7 +207,7 @@ public class ImageSeparationViewModel : ViewModelBase
     {
         _selectedImages?.Clear();
         string[]? result = await _windowService.CreateOpenFileDialog()
-            .HavingFilter(f => f.WithExtension("jpg").WithName("jpg file"))
+            .HavingFilter(f => f.WithExtension("jpg").WithExtension("png").WithExtension("webp").WithName("image file"))
             .WithAllowMultiple()
             .ShowAsync();
         if (result == null)
@@ -302,6 +356,7 @@ public class ImageSeparationViewModel : ViewModelBase
     }
 
     private bool _isRendering;
+
     public bool IsRendering
     {
         get => _isRendering;
@@ -313,6 +368,7 @@ public class ImageSeparationViewModel : ViewModelBase
     }
 
     private bool _useOriginalName = true;
+
     public bool UseOriginalName
     {
         get => _useOriginalName;
@@ -324,6 +380,7 @@ public class ImageSeparationViewModel : ViewModelBase
     }
 
     private string _timeElapsed = "Time taken show here";
+
     public string TimeElapsed
     {
         get => _timeElapsed;
@@ -335,6 +392,7 @@ public class ImageSeparationViewModel : ViewModelBase
     }
 
     private int _currentProgress;
+
     public int CurrentProgress
     {
         get => _currentProgress;
@@ -346,4 +404,5 @@ public class ImageSeparationViewModel : ViewModelBase
     }
 
     public ICommand StopCommand { get; set; }
+  
 }

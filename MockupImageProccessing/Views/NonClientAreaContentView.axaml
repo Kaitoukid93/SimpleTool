@@ -6,9 +6,15 @@
              xmlns:vm="clr-namespace:MockupImageProccessing.ViewModels"
              x:DataType="vm:NonClientAreaContentViewModel"
              x:Class="MockupImageProccessing.Views.NonClientAreaContentView">
-    <Grid Height="30" Margin="20,10" ColumnDefinitions="Auto,12,*">
+    <Grid Height="30" Margin="20,10,150,10" ColumnDefinitions="Auto,12,*,Auto">
         <TextBlock VerticalAlignment="Center" Grid.Column="2" FontSize="11" Text="Simple Tool"></TextBlock>
         <PathIcon VerticalAlignment="Center" Width="20" Height="20" Data="{DynamicResource flip_horizontal}"></PathIcon>
+        <ToggleButton IsChecked="{Binding EnableConsole}" Command="{Binding ToggleConsoleCommand}" Grid.Column="3">
+            <Grid ColumnDefinitions="Auto,8,*">
+                <PathIcon Data="{DynamicResource debug}"></PathIcon>
+                <TextBlock FontSize="12" VerticalAlignment="Center" FontWeight="SemiBold" Grid.Column="2" Text="Console"></TextBlock>
+            </Grid>
+        </ToggleButton>
     </Grid>
    
 </UserControl>

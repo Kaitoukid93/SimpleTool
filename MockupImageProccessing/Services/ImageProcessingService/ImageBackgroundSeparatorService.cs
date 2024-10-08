@@ -21,6 +21,7 @@ public class ImageBackgroundSeparatorService
 
     //the ratio represent width height ratio of the object
     private double widthHeightRatio = 512d / 672d;
+    public event Action<string> ErrorOccured;
     private Avalonia.Size _imageSize = new Avalonia.Size(1000, 10000);
     private Point[] _outline;
     private Point _bottomPoint;
@@ -31,16 +32,10 @@ public class ImageBackgroundSeparatorService
     private Rectangle _desiredObject;
     private Point _centerTop;
     private VectorOfVectorOfPoint _contours;
+    private string _currentWorkingPath;
 
     public ImageBackgroundSeparatorService()
     {
-    }
-
-    private List<string> _imagesPath;
-
-    public void Init(List<string> imagesPath)
-    {
-        _imagesPath = imagesPath;
     }
 
     private VectorOfVectorOfPoint FindContour(Image<Bgr, byte> image)
@@ -91,7 +86,6 @@ public class ImageBackgroundSeparatorService
                 minXIndex = i;
                 minX = m;
             }
-                
         }
 
         if (minXIndex >= 0)
@@ -99,6 +93,7 @@ public class ImageBackgroundSeparatorService
             var outline = contours[largestContours[minXIndex]].ToArray();
             return outline;
         }
+
         return null;
     }
 
@@ -111,7 +106,6 @@ public class ImageBackgroundSeparatorService
             {
                 minXPoint = contour[i];
             }
-                
         }
 
         return minXPoint;
@@ -182,15 +176,21 @@ public class ImageBackgroundSeparatorService
     /// <summary>
     /// get desired object's bounding box from provided point and ration
     /// </summary>
-    private Rectangle GetObjectBoundingBox(Point mostLeftPoint, Point bottomPoint, Rectangle boundingBox)
+    private Rectangle? GetObjectBoundingBox(Point mostLeftPoint, Point bottomPoint, Rectangle boundingBox)
     {
         var right = mostLeftPoint.X + (bottomPoint.Y - mostLeftPoint.Y) / right2BotRatio;
+        if (right <= 0 || right < mostLeftPoint.X)
+        {
+            Console.WriteLine("Problem processing image, could be image with black background ");
+            ErrorOccured?.Invoke(_currentWorkingPath);
+            return null;
+        }
+
         var centerX = (right - mostLeftPoint.X) / 2;
         var top = mostLeftPoint.Y - (centerX) / left2TopRatio;
         if (top < boundingBox.Top)
             top = boundingBox.Top;
         _centerTop = new Point((int)centerX, (int)top);
-
         return new Rectangle(mostLeftPoint.X, (int)top, (int)(right - mostLeftPoint.X),
             (int)(bottomPoint.Y - top));
     }
@@ -232,67 +232,82 @@ public class ImageBackgroundSeparatorService
     public Bitmap ProcessImage(string imagePath, bool showContour, bool showRectangle, double rb,
         double lt, double wh, Avalonia.Size imageSize)
     {
+        _currentWorkingPath = imagePath;
+        Console.WriteLine("--------------------------------------------------");
+        Console.WriteLine("Working path" + " " + _currentWorkingPath);
         right2BotRatio = rb;
         left2TopRatio = lt;
         widthHeightRatio = wh;
         _imageSize = imageSize;
-        using (var image = new Image<Bgr, byte>(imagePath))
-        {
-            int width = image.Width;
-            int height = image.Height;
-            //find contour
-            _contours = FindContour(image);
-            //find outline;
-            _outline = GetContourOutline(_contours);
-            //get contour bounding box
-            _imageBoundingBox = CvInvoke.BoundingRectangle(_outline);
-            //get most left point
-            _mostLeftPoint = FindMostLeftPoint();
-            //get bottom point
-            _bottomPoint = FindBottomPoint();
-            //get object desired bounding box;
-            _desiredObject = GetObjectBoundingBox(_mostLeftPoint, _bottomPoint, _imageBoundingBox);
-            //execute micro adjust to fine tune the image, this act like a feedback signal
-            int feedback = MicroAdjustment(image);
-            _centerTop = new Point(_centerTop.X, _desiredObject.Y);
-            //drawing for debugging
-            image.ROI = new Rectangle(0, 0, width, height);
-            if (showContour)
-                CvInvoke.DrawContours(image, _contours, _contours.Size - 1, new MCvScalar(255, 0, 0));
-            if (showRectangle)
-            {
-                CvInvoke.Rectangle(image, new Rectangle(_centerTop.X - 5, _centerTop.Y - 5, 10, 10),
-                    new MCvScalar(0, 0, 255), 1);
-                CvInvoke.Rectangle(image, new Rectangle(_mostLeftPoint.X - 5, _mostLeftPoint.Y - 5, 10, 10),
-                    new MCvScalar(0, 0, 255), 1);
-                CvInvoke.Rectangle(image, new Rectangle(_mostRightPoint.X - 5, _mostRightPoint.Y - 5, 10, 10),
-                    new MCvScalar(0, 0, 255), 1);
-                CvInvoke.Rectangle(image, new Rectangle(_bottomPoint.X - 5, _bottomPoint.Y - 5, 10, 10),
-                    new MCvScalar(0, 0, 255), 1);
-                CvInvoke.Rectangle(image, _desiredObject, new MCvScalar(0, 0, 255), 1);
-            }
 
-            //resize image keeping aspect ratio
-            double ratio = (double)_desiredObject.Width / (double)_desiredObject.Height;
-            //calculate new width
-            var newWidth = (double)_imageSize.Height * ratio;
-            //create new image with new size
-            var resizedImage = new Image<Bgr, byte>(new Size((int)newWidth, (int)_imageSize.Height));
-            //crop original image 
-            image.ROI = _desiredObject;
-            //resize cropped image
-            CvInvoke.Resize(image, resizedImage, new Size((int)newWidth, (int)_imageSize.Height), 0, 0, Inter.Linear);
-            //Create a blank image with final size
-            Image<Bgr, byte> finalImage = new Image<Bgr, byte>((int)_imageSize.Width, (int)_imageSize.Height);
-            //Set its ROI to the same as Mask and in the centre of the image (you may wish to change this)
-            finalImage.ROI = new Rectangle((finalImage.Width - resizedImage.Width) / 2,
-                (finalImage.Height - resizedImage.Height) / 2, resizedImage.Width, resizedImage.Height);
-            //Copy the mask to the return image
-            CvInvoke.cvCopy(resizedImage, finalImage, IntPtr.Zero);
-            //Reset the return image ROI so it has the same dimensions
-            finalImage.ROI = new Rectangle(0, 0, (int)_imageSize.Width, (int)_imageSize.Height);
-            //Return the image instead of the mask
-            return finalImage.ToBitmap();
+        try
+        {
+            using (var image = new Image<Bgr, byte>(imagePath))
+            {
+                int width = image.Width;
+                int height = image.Height;
+                //find contour
+                _contours = FindContour(image);
+                //find outline;
+                _outline = GetContourOutline(_contours);
+                //get contour bounding box
+                _imageBoundingBox = CvInvoke.BoundingRectangle(_outline);
+                //get most left point
+                _mostLeftPoint = FindMostLeftPoint();
+                //get bottom point
+                _bottomPoint = FindBottomPoint();
+                //get object desired bounding box;
+                _desiredObject = GetObjectBoundingBox(_mostLeftPoint, _bottomPoint, _imageBoundingBox) ??
+                                 new Rectangle(0, 0, width, height);
+                //execute micro adjust to fine tune the image, this act like a feedback signal
+                int feedback = MicroAdjustment(image);
+                _centerTop = new Point(_centerTop.X, _desiredObject.Y);
+                //drawing for debugging
+                image.ROI = new Rectangle(0, 0, width, height);
+                if (showContour)
+                    CvInvoke.DrawContours(image, _contours, _contours.Size - 1, new MCvScalar(255, 0, 0));
+                if (showRectangle)
+                {
+                    CvInvoke.Rectangle(image, new Rectangle(_centerTop.X - 5, _centerTop.Y - 5, 10, 10),
+                        new MCvScalar(0, 0, 255), 1);
+                    CvInvoke.Rectangle(image, new Rectangle(_mostLeftPoint.X - 5, _mostLeftPoint.Y - 5, 10, 10),
+                        new MCvScalar(0, 0, 255), 1);
+                    CvInvoke.Rectangle(image, new Rectangle(_mostRightPoint.X - 5, _mostRightPoint.Y - 5, 10, 10),
+                        new MCvScalar(0, 0, 255), 1);
+                    CvInvoke.Rectangle(image, new Rectangle(_bottomPoint.X - 5, _bottomPoint.Y - 5, 10, 10),
+                        new MCvScalar(0, 0, 255), 1);
+                    CvInvoke.Rectangle(image, _desiredObject, new MCvScalar(0, 0, 255), 1);
+                }
+
+                //resize image keeping aspect ratio
+                double ratio = (double)_desiredObject.Width / (double)_desiredObject.Height;
+                //calculate new width
+                var newWidth = (double)_imageSize.Height * ratio;
+                //create new image with new size
+                var resizedImage = new Image<Bgr, byte>(new Size((int)newWidth, (int)_imageSize.Height));
+                //crop original image 
+                image.ROI = _desiredObject;
+                //resize cropped image
+                CvInvoke.Resize(image, resizedImage, new Size((int)newWidth, (int)_imageSize.Height), 0, 0,
+                    Inter.Linear);
+                //Create a blank image with final size
+                Image<Bgr, byte> finalImage = new Image<Bgr, byte>((int)_imageSize.Width, (int)_imageSize.Height);
+                //Set its ROI to the same as Mask and in the centre of the image (you may wish to change this)
+                finalImage.ROI = new Rectangle((finalImage.Width - resizedImage.Width) / 2,
+                    (finalImage.Height - resizedImage.Height) / 2, resizedImage.Width, resizedImage.Height);
+                //Copy the mask to the return image
+                CvInvoke.cvCopy(resizedImage, finalImage, IntPtr.Zero);
+                //Reset the return image ROI so it has the same dimensions
+                finalImage.ROI = new Rectangle(0, 0, (int)_imageSize.Width, (int)_imageSize.Height);
+                //Return the image instead of the mask
+                return finalImage.ToBitmap();
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            ErrorOccured?.Invoke(_currentWorkingPath);
+            return null;
         }
     }
 }

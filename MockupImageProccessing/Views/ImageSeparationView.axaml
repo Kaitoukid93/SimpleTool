@@ -18,8 +18,8 @@
                 <Setter Property="BorderBrush" Value="OrangeRed"></Setter>
             </Style>
         </Style>
-        
-      
+
+
         <Style Selector="TextBlock.renderStatus">
             <Setter Property="Foreground" Value="{DynamicResource SystemAccentColor}"></Setter>
             <Style Selector="^.rendering">
@@ -233,15 +233,25 @@
                   RowDefinitions="Auto,20,*">
                 <Grid Row="0" ColumnDefinitions="*,Auto">
                     <Grid IsVisible="{Binding IsRendering}" ColumnDefinitions="*,10,Auto" Margin="0,20,20,0">
-                        <ProgressBar  behavior:ProgressBarSmoother.Value="{Binding CurrentProgress}" Minimum="0" Maximum="100"   HorizontalAlignment="Stretch"></ProgressBar>
-                        <ui:ProgressRing Grid.Column="2" IsIndeterminate="True"  Width="20" Height="20"></ui:ProgressRing>
+                        <ProgressBar behavior:ProgressBarSmoother.Value="{Binding CurrentProgress}" Minimum="0"
+                                     Maximum="100" HorizontalAlignment="Stretch">
+                        </ProgressBar>
+                        <ui:ProgressRing Grid.Column="2" IsIndeterminate="True" Width="20" Height="20"></ui:ProgressRing>
                     </Grid>
-                   
+
                     <StackPanel Grid.Column="1" HorizontalAlignment="Right" Margin="0,20,0,0" Orientation="Horizontal"
                                 Spacing="15">
-                        <Border Padding="5,0" CornerRadius="4" Height="30" Classes="renderStatus" Classes.rendering="{Binding IsRendering}" MinWidth="120" BorderThickness="1"
-                               >
-                            <TextBlock Classes="renderStatus" Classes.rendering="{Binding IsRendering}" HorizontalAlignment="Center"  VerticalAlignment="Center"
+                        <Border Background="{DynamicResource warningBackgroundBrush}" BorderBrush="OrangeRed"
+                                Padding="5,0" CornerRadius="4" Height="30" IsVisible="{Binding ShowErrorMessage}"
+                                MinWidth="120" BorderThickness="1">
+                            <TextBlock Foreground="OrangeRed" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                       FontWeight="SemiBold" Text="{Binding ErrorMessage}">
+                            </TextBlock>
+                        </Border>
+                        <Border Padding="5,0" CornerRadius="4" Height="30" Classes="renderStatus"
+                                Classes.rendering="{Binding IsRendering}" MinWidth="120" BorderThickness="1">
+                            <TextBlock Classes="renderStatus" Classes.rendering="{Binding IsRendering}"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center"
                                        FontWeight="SemiBold" Text="{Binding TimeElapsed}">
                             </TextBlock>
                         </Border>
@@ -252,7 +262,8 @@
                                 <TextBlock Text="Stop" Grid.Column="2"></TextBlock>
                             </Grid>
                         </Button>
-                        <Button IsEnabled="{Binding CanRender}" IsVisible="{Binding !IsRendering}" Command="{Binding ProcessImageCommand}"
+                        <Button IsEnabled="{Binding CanRender}" IsVisible="{Binding !IsRendering}"
+                                Command="{Binding ProcessImageCommand}"
                                 Classes="accent">
                             <Grid ColumnDefinitions="auto,8,*">
                                 <PathIcon Width="12" Height="12" Data="{DynamicResource playOutline}"></PathIcon>
@@ -434,7 +445,7 @@
 
 
             <Grid Column="2">
-            
+
             </Grid>
         </Grid>
 

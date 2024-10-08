@@ -6,7 +6,7 @@ namespace MockupImageProccessing.ViewModels;
 public class MainWindowViewModel : ViewModelBase
 {
     private ImageSeparationViewModel _imageSeparationViewModel;
-
+    
     public MainWindowViewModel(ImageSeparationViewModel imageSeparationViewModel, AboutViewModel aboutViewModel,NonClientAreaContentViewModel nonClientAreaContentViewModel)
     {
         NonClientAreaContent = nonClientAreaContentViewModel;
@@ -30,6 +30,8 @@ public class MainWindowViewModel : ViewModelBase
         };
         SelectedView = SideMenuItems.First();
     }
+
+   
 
     public List<SideMenuItemViewModel> SideMenuItems { get; set; }
     private ViewModelBase _currentViewModel;
