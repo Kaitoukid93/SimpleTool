@@ -321,6 +321,15 @@
 
                             </StackPanel>
                             <StackPanel Spacing="8">
+                                <TextBlock Text="File format" FontWeight="SemiBold"></TextBlock>
+                                <StackPanel Spacing="2">
+                                    <ui:FAComboBox ItemsSource="{Binding AvailableFormats}" SelectedItem="{Binding FileFormat}" HorizontalAlignment="Stretch" SelectedIndex="0">
+                                   
+                                    </ui:FAComboBox>
+                                </StackPanel>
+
+                            </StackPanel>
+                            <StackPanel Spacing="8">
                                 <TextBlock Text="Advance settings" FontWeight="SemiBold"></TextBlock>
                                 <StackPanel Spacing="2">
                                     <ui:SettingsExpander Header="Performance settings"
@@ -424,6 +433,19 @@
                                                                   Theme="{DynamicResource borderlessNumberBox}"
                                                                   Minimum="0"
                                                                   Maximum="100">
+                                                    </ui:NumberBox>
+                                                </StackPanel>
+                                            </ui:SettingsExpanderItem.Footer>
+                                        </ui:SettingsExpanderItem>
+                                        <ui:SettingsExpanderItem MinWidth="500" Content="Threshold factor"
+                                                                 Description="This factor affect contour detector function, try to change this if your image contour is not detected"
+                                                                 IsClickEnabled="False">
+                                            <ui:SettingsExpanderItem.Footer>
+                                                <StackPanel Orientation="Horizontal" Spacing="8">
+                                                    <ui:NumberBox Value="{Binding ThresholdFactor}" SimpleNumberFormat="F0"
+                                                                  Theme="{DynamicResource borderlessNumberBox}"
+                                                                  Minimum="0"
+                                                                  Maximum="55">
                                                     </ui:NumberBox>
                                                 </StackPanel>
                                             </ui:SettingsExpanderItem.Footer>

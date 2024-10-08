@@ -33,6 +33,7 @@ public class ImageBackgroundSeparatorService
     private Point _centerTop;
     private VectorOfVectorOfPoint _contours;
     private string _currentWorkingPath;
+    private int _thresholdFactor = 40;
 
     public ImageBackgroundSeparatorService()
     {
@@ -47,10 +48,9 @@ public class ImageBackgroundSeparatorService
         var minimumThresold = 200;
         var maximumThresold = 250;
         var intensityRatio = average.Intensity / 255;
-        var dynamicThresold = intensityRatio * 50;
+        var dynamicThresold = intensityRatio * _thresholdFactor;
         // Threshold to separate object from background,
         CvInvoke.Threshold(grayImage, grayImage, minimumThresold + dynamicThresold, 255, ThresholdType.BinaryInv);
-
         // Find contours
         var contours = new VectorOfVectorOfPoint();
         CvInvoke.FindContours(grayImage, contours, null, RetrType.List, ChainApproxMethod.ChainApproxSimple);
@@ -230,7 +230,7 @@ public class ImageBackgroundSeparatorService
     }
 
     public Bitmap ProcessImage(string imagePath, bool showContour, bool showRectangle, double rb,
-        double lt, double wh, Avalonia.Size imageSize)
+        double lt, double wh, Avalonia.Size imageSize, int thresoldFactor)
     {
         _currentWorkingPath = imagePath;
         Console.WriteLine("--------------------------------------------------");
@@ -239,6 +239,7 @@ public class ImageBackgroundSeparatorService
         left2TopRatio = lt;
         widthHeightRatio = wh;
         _imageSize = imageSize;
+        _thresholdFactor = thresoldFactor;
 
         try
         {
@@ -265,7 +266,11 @@ public class ImageBackgroundSeparatorService
                 //drawing for debugging
                 image.ROI = new Rectangle(0, 0, width, height);
                 if (showContour)
-                    CvInvoke.DrawContours(image, _contours, _contours.Size - 1, new MCvScalar(255, 0, 0));
+                {
+                    CvInvoke.DrawContours(image, _contours, - 1, new MCvScalar(255, 0, 0));
+                    CvInvoke.DrawContours(image, _contours, _contours.Size- 1, new MCvScalar(0, 255, 0));
+                }
+                    
                 if (showRectangle)
                 {
                     CvInvoke.Rectangle(image, new Rectangle(_centerTop.X - 5, _centerTop.Y - 5, 10, 10),

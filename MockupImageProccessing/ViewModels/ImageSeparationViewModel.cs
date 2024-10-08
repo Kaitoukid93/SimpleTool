@@ -71,6 +71,8 @@ public class ImageSeparationViewModel : ViewModelBase
         var path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
         OutputDirectory = Path.Combine(path, "MIPOutput");
         Directory.CreateDirectory(OutputDirectory);
+        FileFormat = AvailableFormats[0];
+        ThresholdFactor = 40;
     }
 
     private bool _shouldBeRunning = false;
@@ -102,7 +104,7 @@ public class ImageSeparationViewModel : ViewModelBase
             CurrentProgress = (int)((count * 100d / (double)_selectedImages.Count));
             TimeElapsed = count + "/" + _selectedImages.Count + " " + "exported";
             var result = await Task.Run(() => imageProcessor.ProcessImage(image, ShowContour, ShowRectangle,
-                _right2BotRatio, _left2TopRatio, _whRatio, size));
+                _right2BotRatio, _left2TopRatio, _whRatio, size,ThresholdFactor));
             if (result == null)
             {
                 Console.WriteLine("Problem processing image, could be image with black background " + image);
@@ -113,9 +115,9 @@ public class ImageSeparationViewModel : ViewModelBase
             var fileName = Prefix + "-" + count++ + ".jpg";
             if (UseOriginalName)
             {
-                fileName = Path.GetFileName(image);
+                fileName = Path.GetFileNameWithoutExtension(image) + FileFormat;
             }
-
+            
             var filePath = Path.Combine(OutputDirectory, fileName);
             DisplayImage.Save(filePath);
             Thread.Sleep(Interval);
@@ -402,7 +404,29 @@ public class ImageSeparationViewModel : ViewModelBase
             OnPropertyChanged();
         }
     }
+    private int _thresholdFactor;
+
+    public int ThresholdFactor
+    {
+        get => _thresholdFactor;
+        set
+        {
+            _thresholdFactor = value;
+            OnPropertyChanged();
+        }
+    }
+    private string _fileFormat = ".jpg";
+
+    public string FileFormat
+    {
+        get => _fileFormat;
+        set
+        {
+            _fileFormat = value;
+            OnPropertyChanged();
+        }
+    }
 
     public ICommand StopCommand { get; set; }
-  
+    public List<string> AvailableFormats => [".jpg", ".png", ".webp"];
 }
