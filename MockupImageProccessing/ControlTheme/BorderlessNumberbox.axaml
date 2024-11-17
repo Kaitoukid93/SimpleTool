@@ -4,6 +4,14 @@
   <Design.PreviewWith>
         <Border Padding="30">
             <StackPanel Spacing="10">
+                <TextBox  VerticalContentAlignment="Center">
+                    <TextBox.InnerRightContent>
+                        <Button Width="70" Margin="5"
+                                Content="Browse"
+                                Padding="5">
+                        </Button>
+                    </TextBox.InnerRightContent>
+                </TextBox>
                 <ui:NumberBox Width="150" SpinButtonPlacementMode="Compact" BorderThickness="1" Minimum="0" BorderBrush="Red" Maximum="100" Value="10" />
                 <ui:NumberBox Width="150" SpinButtonPlacementMode="Inline" Minimum="0" Maximum="100" Value="10" />
                 <ui:NumberBox Width="150" SpinButtonPlacementMode="Hidden" Minimum="0" Maximum="100" Value="10" />

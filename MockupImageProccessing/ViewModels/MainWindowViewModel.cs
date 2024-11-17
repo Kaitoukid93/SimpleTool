@@ -7,18 +7,26 @@ public class MainWindowViewModel : ViewModelBase
 {
     private ImageSeparationViewModel _imageSeparationViewModel;
     
-    public MainWindowViewModel(ImageSeparationViewModel imageSeparationViewModel, AboutViewModel aboutViewModel,NonClientAreaContentViewModel nonClientAreaContentViewModel)
+    public MainWindowViewModel(ImageSeparationViewModel imageSeparationViewModel,ImageProcessingViewModel imageProcessingViewModel, AboutViewModel aboutViewModel,NonClientAreaContentViewModel nonClientAreaContentViewModel)
     {
         NonClientAreaContent = nonClientAreaContentViewModel;
         _imageSeparationViewModel = imageSeparationViewModel;
+        _imageProcessingViewModel = imageProcessingViewModel;
         SideMenuItems = new List<SideMenuItemViewModel>()
         {
             new SideMenuItemViewModel()
             {
                 Name = "MIP",
                 Icon = "mip",
-                Description = "Mockup image processing",
+                Description = "Mockup image cropping",
                 Page = _imageSeparationViewModel
+            },
+            new SideMenuItemViewModel()
+            {
+                Name = "ISP",
+                Icon = "aiImage",
+                Description = "Image processing",
+                Page = _imageProcessingViewModel,
             },
             new SideMenuItemViewModel()
             {
@@ -48,6 +56,7 @@ public class MainWindowViewModel : ViewModelBase
 
     public NonClientAreaContentViewModel NonClientAreaContent { get; }
     private SideMenuItemViewModel _selectedView;
+    private readonly ImageProcessingViewModel _imageProcessingViewModel;
 
     public SideMenuItemViewModel SelectedView
     {

@@ -36,6 +36,7 @@ public partial class App : Application
         var service = new ServiceCollection();
         service.AddSingleton<MainWindowViewModel>();
         service.AddSingleton<ImageSeparationViewModel>();
+        service.AddSingleton<ImageProcessingViewModel>();
         service.AddSingleton<IWindowService, WindowService>();
         service.AddSingleton<AboutViewModel>();
         service.AddSingleton<NonClientAreaContentViewModel>();

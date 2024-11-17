@@ -38,6 +38,9 @@ build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 [C:/Users/zOe/RiderProjects/MockupImageProccessing/MockupImageProccessing/Views/GeometryCollection/GeometryCollection.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
+[C:/Users/zOe/RiderProjects/MockupImageProccessing/MockupImageProccessing/Views/ImageProcessingView.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
 [C:/Users/zOe/RiderProjects/MockupImageProccessing/MockupImageProccessing/Views/ImageSeparationView.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
@@ -48,4 +51,7 @@ build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
 [C:/Users/zOe/RiderProjects/MockupImageProccessing/MockupImageProccessing/Views/SideMenuItemView.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
+[C:/Users/zOe/RiderProjects/MockupImageProccessing/MockupImageProccessing/Views/test.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml

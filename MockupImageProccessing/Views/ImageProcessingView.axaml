@@ -1,0 +1,289 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             xmlns:vm="clr-namespace:MockupImageProccessing.ViewModels"
+
+             xmlns:ui="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+             xmlns:behavior="clr-namespace:MockupImageProccessing.Behavior"
+             x:DataType="vm:ImageProcessingViewModel"
+             x:Class="MockupImageProccessing.Views.ImageProcessingView">
+ <UserControl.Styles>
+        <Style Selector="Border.renderStatus">
+            <Setter Property="Background" Value="{DynamicResource accentBackgroundBrush}"></Setter>
+            <Setter Property="BorderBrush" Value="{DynamicResource SystemAccentColor}"></Setter>
+            <Style Selector="^.rendering">
+                <Setter Property="Background" Value="{DynamicResource warningBackgroundBrush}"></Setter>
+                <Setter Property="BorderBrush" Value="OrangeRed"></Setter>
+            </Style>
+        </Style>
+
+
+        <Style Selector="TextBlock.renderStatus">
+            <Setter Property="Foreground" Value="{DynamicResource SystemAccentColor}"></Setter>
+            <Style Selector="^.rendering">
+                <Setter Property="Foreground" Value="OrangeRed"></Setter>
+            </Style>
+        </Style>
+    </UserControl.Styles>
+    <UserControl.Resources>
+        <SolidColorBrush x:Key="accentBackgroundBrush" Color="{DynamicResource SystemAccentColor}" Opacity="0.25"></SolidColorBrush>
+        <SolidColorBrush x:Key="warningBackgroundBrush" Color="OrangeRed" Opacity="0.25"></SolidColorBrush>
+        <ControlTheme TargetType="TextBox" x:Key="{x:Type TextBox}">
+            <Setter Property="Foreground" Value="{DynamicResource TextControlForeground}" />
+            <Setter Property="Background" Value="{DynamicResource TextControlBackground}" />
+            <Setter Property="CaretBrush" Value="{DynamicResource TextControlForeground}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource TextControlBorderBrush}" />
+            <Setter Property="SelectionBrush" Value="{DynamicResource TextControlSelectionHighlightColor}" />
+            <Setter Property="SelectionForegroundBrush"
+                    Value="{DynamicResource TextOnAccentFillColorSelectedTextBrush}" />
+            <Setter Property="BorderThickness" Value="{DynamicResource TextControlBorderThemeThickness}" />
+            <Setter Property="FontSize" Value="{DynamicResource ControlContentThemeFontSize}" />
+            <Setter Property="MinHeight" Value="{DynamicResource TextControlThemeMinHeight}" />
+            <Setter Property="MinWidth" Value="{DynamicResource TextControlThemeMinWidth}" />
+            <Setter Property="Padding" Value="{DynamicResource TextControlThemePadding}" />
+            <Setter Property="FocusAdorner" Value="{x:Null}" />
+            <Setter Property="ContextFlyout" Value="{StaticResource DefaultTextBoxContextFlyout}" />
+            <Setter Property="ScrollViewer.IsScrollChainingEnabled" Value="True" />
+            <Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <DataValidationErrors>
+                        <Panel>
+                            <Border Name="PART_BorderElement"
+                                    Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="0"
+                                    CornerRadius="{TemplateBinding CornerRadius}"
+                                    MinWidth="{TemplateBinding MinWidth}"
+                                    MinHeight="{TemplateBinding MinHeight}">
+                            </Border>
+
+                            <Border Margin="{TemplateBinding BorderThickness}">
+                                <Grid ColumnDefinitions="Auto,*,Auto">
+                                    <ContentPresenter Grid.Column="0"
+                                                      Grid.ColumnSpan="1"
+                                                      Content="{TemplateBinding InnerLeftContent}" />
+                                    <DockPanel x:Name="PART_InnerDockPanel"
+                                               Grid.Column="1"
+                                               Grid.ColumnSpan="1"
+                                               Cursor="IBeam"
+                                               Margin="{TemplateBinding Padding}">
+                                        <TextBlock Name="PART_FloatingWatermark"
+                                                   Foreground="{DynamicResource SystemAccentColor}"
+                                                   FontSize="{TemplateBinding FontSize}"
+                                                   IsVisible="False"
+                                                   Text="{TemplateBinding Watermark}"
+                                                   DockPanel.Dock="Top" />
+                                        <ScrollViewer
+                                            HorizontalScrollBarVisibility="{TemplateBinding (ScrollViewer.HorizontalScrollBarVisibility)}"
+                                            VerticalScrollBarVisibility="{TemplateBinding (ScrollViewer.VerticalScrollBarVisibility)}"
+                                            IsScrollChainingEnabled="{TemplateBinding (ScrollViewer.IsScrollChainingEnabled)}"
+                                            AllowAutoHide="{TemplateBinding (ScrollViewer.AllowAutoHide)}">
+                                            <Panel>
+                                                <TextBlock Name="PART_Watermark"
+                                                           Foreground="{DynamicResource TextControlPlaceholderForeground}"
+                                                           Text="{TemplateBinding Watermark}"
+                                                           TextAlignment="{TemplateBinding TextAlignment}"
+                                                           TextWrapping="{TemplateBinding TextWrapping}"
+                                                           IsVisible="{TemplateBinding Text, Converter={x:Static StringConverters.IsNullOrEmpty}}"
+                                                           HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                           VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                                                <TextPresenter Name="PART_TextPresenter"
+                                                               Text="{TemplateBinding Text, Mode=TwoWay}"
+                                                               CaretIndex="{TemplateBinding CaretIndex}"
+                                                               SelectionStart="{TemplateBinding SelectionStart}"
+                                                               SelectionEnd="{TemplateBinding SelectionEnd}"
+                                                               TextAlignment="{TemplateBinding TextAlignment}"
+                                                               TextWrapping="{TemplateBinding TextWrapping}"
+                                                               LineHeight="{TemplateBinding LineHeight}"
+                                                               LetterSpacing="{TemplateBinding LetterSpacing}"
+                                                               PasswordChar="{TemplateBinding PasswordChar}"
+                                                               RevealPassword="{TemplateBinding RevealPassword}"
+                                                               SelectionBrush="{TemplateBinding SelectionBrush}"
+                                                               SelectionForegroundBrush="{TemplateBinding SelectionForegroundBrush}"
+                                                               CaretBrush="{TemplateBinding CaretBrush}"
+                                                               HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                               VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                                            </Panel>
+                                        </ScrollViewer>
+                                    </DockPanel>
+                                    <ContentPresenter Grid.Column="2"
+                                                      Grid.ColumnSpan="1"
+                                                      Content="{TemplateBinding InnerRightContent}" />
+                                </Grid>
+                            </Border>
+                        </Panel>
+                    </DataValidationErrors>
+                </ControlTemplate>
+            </Setter>
+
+            <!-- Disabled State -->
+            <Style Selector="^:disabled">
+                <Setter Property="Foreground" Value="{DynamicResource TextControlForegroundDisabled}" />
+
+                <Style Selector="^ /template/ Border#PART_BorderElement">
+                    <Setter Property="Background" Value="{DynamicResource TextControlBackgroundDisabled}" />
+                    <Setter Property="BorderBrush" Value="{DynamicResource TextControlBorderBrushDisabled}" />
+                </Style>
+
+                <Style Selector="^ /template/ TextBlock#PART_Watermark, ^ /template/ TextBlock#PART_FloatingWatermark">
+                    <Setter Property="Foreground" Value="{DynamicResource TextControlPlaceholderForegroundDisabled}" />
+                </Style>
+            </Style>
+
+            <!-- PointerOver State-->
+            <Style Selector="^:pointerover">
+                <Setter Property="Foreground" Value="{DynamicResource TextControlForegroundPointerOver}" />
+
+                <Style Selector="^ /template/ Border#PART_BorderElement">
+                    <Setter Property="BorderBrush" Value="{DynamicResource TextControlBorderBrushPointerOver}" />
+                    <Setter Property="Background" Value="{DynamicResource TextControlBackgroundPointerOver}" />
+                </Style>
+
+                <Style Selector="^ /template/ TextBlock#PART_Watermark">
+                    <Setter Property="Foreground" Value="{DynamicResource TextControlPlaceholderForegroundPointerOver}" />
+                </Style>
+            </Style>
+
+            <!-- Focused State -->
+            <Style Selector="^:focus">
+                <Setter Property="Foreground" Value="{DynamicResource TextControlForegroundFocused}" />
+
+                <Style Selector="^ /template/ TextBlock#PART_Watermark">
+                    <Setter Property="Foreground" Value="{DynamicResource TextControlPlaceholderForegroundFocused}" />
+                </Style>
+
+                <Style Selector="^ /template/ Border#PART_BorderElement">
+                    <Setter Property="Background" Value="{DynamicResource TextControlBackgroundFocused}" />
+                    <Setter Property="BorderBrush" Value="{DynamicResource AccentButtonBackground}" />
+                    <Setter Property="BorderThickness" Value="1" />
+                </Style>
+            </Style>
+
+            <Style Selector="^:error /template/ Border#PART_BorderElement">
+                <Setter Property="BorderBrush" Value="{DynamicResource SystemFillColorCriticalBrush}" />
+            </Style>
+
+            <Style Selector="^[UseFloatingWatermark=true]:not(:empty) /template/ TextBlock#PART_FloatingWatermark">
+                <Setter Property="IsVisible" Value="True" />
+            </Style>
+
+            <Style Selector="^.revealPasswordButton[AcceptsReturn=False][IsReadOnly=False]:not(TextBox:empty)">
+                <Setter Property="InnerRightContent">
+                    <Template>
+                        <ToggleButton Theme="{StaticResource TextBoxPasswordButtonStyle}"
+                                      BorderThickness="{TemplateBinding BorderThickness}"
+                                      CornerRadius="{DynamicResource ControlCornerRadius}"
+                                      Padding="{StaticResource HelperButtonThemePadding}"
+                                      IsTabStop="False"
+                                      Focusable="False"
+                                      FontSize="{TemplateBinding FontSize}"
+                                      Width="30"
+                                      VerticalAlignment="Stretch"
+                                      IsChecked="{Binding $parent[TextBox].RevealPassword, Mode=TwoWay}" />
+                    </Template>
+                </Setter>
+            </Style>
+
+            <Style Selector="^.clearButton[AcceptsReturn=False][IsReadOnly=False]:focus:not(TextBox:empty)">
+                <Setter Property="InnerRightContent">
+                    <Template>
+                        <Button Theme="{StaticResource TextBoxDeleteButtonStyle}"
+                                Command="{Binding $parent[TextBox].Clear}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="{DynamicResource ControlCornerRadius}"
+                                Padding="{StaticResource HelperButtonThemePadding}"
+                                IsTabStop="False"
+                                Focusable="False"
+                                FontSize="{TemplateBinding FontSize}"
+                                Width="30"
+                                VerticalAlignment="Stretch" />
+                    </Template>
+                </Setter>
+            </Style>
+        </ControlTheme>
+    </UserControl.Resources>
+    <Grid RowDefinitions="Auto,20,*">
+        <TextBlock HorizontalAlignment="Left" Text="OpenCV image processing" FontWeight="SemiBold" FontSize="25"></TextBlock>
+        <Grid Row="2" ColumnDefinitions="*,10,Auto">
+            <Grid Column="0">
+                <Viewbox HorizontalAlignment="Left" VerticalAlignment="Center">
+                    <Border CornerRadius="10" BorderBrush="{DynamicResource ButtonBorderBrush}"
+                            BorderThickness="0">
+                        <Grid>
+                            <TextBlock FontSize="12" Margin="50"
+                                       Foreground="{DynamicResource ButtonForegroundDisabled}"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center"
+                                       IsVisible="{Binding ShowNoImageText}" Text="No image selected">
+                            </TextBlock>
+                            <TextBlock FontSize="12" Margin="50"
+                                       Foreground="{DynamicResource ButtonForegroundDisabled}"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center"
+                                       IsVisible="{Binding !ShowNoImageText}" Text="Click Render to start">
+                            </TextBlock>
+                            <Image Stretch="Uniform" Source="{Binding DisplayImage}"></Image>
+
+                        </Grid>
+                    </Border>
+                </Viewbox>
+            </Grid>
+            <Grid Grid.Column="2" MinWidth="700" MaxWidth="800"
+                  RowDefinitions="Auto,20,*">
+                <Grid Row="0" ColumnDefinitions="*,Auto">
+                    
+                        <Button IsEnabled="{Binding CanRender}" IsVisible="{Binding !IsRendering}"
+                                Command="{Binding ProcessImageCommand}"
+                                Classes="accent">
+                            <Grid ColumnDefinitions="auto,8,*">
+                                <PathIcon Width="12" Height="12" Data="{DynamicResource playOutline}"></PathIcon>
+                                <TextBlock Text="Render" Grid.Column="2"></TextBlock>
+                            </Grid>
+                        </Button>
+                </Grid>
+                <ScrollViewer Grid.Row="2" IsEnabled="{Binding !IsRendering}" IsScrollInertiaEnabled="True">
+                    <Grid>
+                        <StackPanel Spacing="20">
+                            <StackPanel Spacing="8">
+                                <TextBlock Text="Select images" FontWeight="SemiBold"></TextBlock>
+                                <TextBox VerticalContentAlignment="Center" Text="{Binding ImagesPath}">
+                                    <TextBox.InnerRightContent>
+                                        <Button Width="70" Command="{Binding OpenImageBrowserCommand}" Margin="5"
+                                                Content="Browse"
+                                                Padding="5">
+                                        </Button>
+                                    </TextBox.InnerRightContent>
+                                </TextBox>
+                            </StackPanel>
+                            <StackPanel Spacing="8">
+                                <TextBlock Text="Select output folder" FontWeight="SemiBold"></TextBlock>
+                                <StackPanel Spacing="2">
+                                    <TextBox VerticalContentAlignment="Center" Text="{Binding OutputDirectory}">
+                                        <TextBox.InnerRightContent>
+                                            <Button Width="70" Command="{Binding OpenSelectOutputDirectoryCommand}"
+                                                    Margin="5" Content="Select"
+                                                    Padding="5">
+                                            </Button>
+                                        </TextBox.InnerRightContent>
+                                    </TextBox>
+                                    <CheckBox IsChecked="{Binding OpenOutputDirectory}" Margin="5,0,0,0"
+                                              Content="Open output folder after rendering process is finished">
+                                    </CheckBox>
+                                </StackPanel>
+
+                            </StackPanel>
+                        </StackPanel>
+
+                    </Grid>
+                </ScrollViewer>
+            </Grid>
+
+
+            <Grid Column="2">
+
+            </Grid>
+        </Grid>
+
+    </Grid>
+</UserControl>

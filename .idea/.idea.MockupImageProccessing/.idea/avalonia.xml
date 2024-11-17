@@ -7,10 +7,12 @@
         <entry key="MockupImageProccessing/ControlTheme/BorderlessNumberbox.axaml" value="MockupImageProccessing/MockupImageProccessing.csproj" />
         <entry key="MockupImageProccessing/Views/AboutView.axaml" value="MockupImageProccessing/MockupImageProccessing.csproj" />
         <entry key="MockupImageProccessing/Views/GeometryCollection/GeometryCollection.axaml" value="MockupImageProccessing/MockupImageProccessing.csproj" />
+        <entry key="MockupImageProccessing/Views/ImageProcessingView.axaml" value="MockupImageProccessing/MockupImageProccessing.csproj" />
         <entry key="MockupImageProccessing/Views/ImageSeparationView.axaml" value="MockupImageProccessing/MockupImageProccessing.csproj" />
         <entry key="MockupImageProccessing/Views/MainWindow.axaml" value="MockupImageProccessing/MockupImageProccessing.csproj" />
         <entry key="MockupImageProccessing/Views/NonClientAreaContentView.axaml" value="MockupImageProccessing/MockupImageProccessing.csproj" />
         <entry key="MockupImageProccessing/Views/SideMenuItemView.axaml" value="MockupImageProccessing/MockupImageProccessing.csproj" />
+        <entry key="MockupImageProccessing/Views/test.axaml" value="MockupImageProccessing/MockupImageProccessing.csproj" />
       </map>
     </option>
   </component>
