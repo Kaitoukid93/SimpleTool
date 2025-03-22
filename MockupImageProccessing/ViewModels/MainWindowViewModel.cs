@@ -7,11 +7,11 @@ public class MainWindowViewModel : ViewModelBase
 {
     private ImageSeparationViewModel _imageSeparationViewModel;
     
-    public MainWindowViewModel(ImageSeparationViewModel imageSeparationViewModel,ImageProcessingViewModel imageProcessingViewModel, AboutViewModel aboutViewModel,NonClientAreaContentViewModel nonClientAreaContentViewModel)
+    public MainWindowViewModel(ImageSeparationViewModel imageSeparationViewModel,TextProcessingViewModel imageProcessingViewModel, AboutViewModel aboutViewModel,NonClientAreaContentViewModel nonClientAreaContentViewModel)
     {
         NonClientAreaContent = nonClientAreaContentViewModel;
         _imageSeparationViewModel = imageSeparationViewModel;
-        _imageProcessingViewModel = imageProcessingViewModel;
+        _textProcessingViewModel = imageProcessingViewModel;
         SideMenuItems = new List<SideMenuItemViewModel>()
         {
             new SideMenuItemViewModel()
@@ -23,10 +23,10 @@ public class MainWindowViewModel : ViewModelBase
             },
             new SideMenuItemViewModel()
             {
-                Name = "ISP",
-                Icon = "aiImage",
-                Description = "Image processing",
-                Page = _imageProcessingViewModel,
+                Name = "Text",
+                Icon = "text",
+                Description = "Text processing",
+                Page = _textProcessingViewModel,
             },
             new SideMenuItemViewModel()
             {
@@ -56,7 +56,7 @@ public class MainWindowViewModel : ViewModelBase
 
     public NonClientAreaContentViewModel NonClientAreaContent { get; }
     private SideMenuItemViewModel _selectedView;
-    private readonly ImageProcessingViewModel _imageProcessingViewModel;
+    private readonly TextProcessingViewModel _textProcessingViewModel;
 
     public SideMenuItemViewModel SelectedView
     {

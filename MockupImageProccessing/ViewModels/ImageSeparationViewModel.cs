@@ -209,7 +209,7 @@ public class ImageSeparationViewModel : ViewModelBase
     {
         _selectedImages?.Clear();
         string[]? result = await _windowService.CreateOpenFileDialog()
-            .HavingFilter(f => f.WithExtension("jpg").WithExtension("png").WithExtension("webp").WithName("image file"))
+            .HavingFilter(f => f.WithExtension("bmp").WithExtension("jpg").WithExtension("png").WithExtension("webp").WithName("image file"))
             .WithAllowMultiple()
             .ShowAsync();
         if (result == null)

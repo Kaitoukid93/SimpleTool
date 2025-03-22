@@ -7,8 +7,8 @@
 
              xmlns:ui="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
              xmlns:behavior="clr-namespace:MockupImageProccessing.Behavior"
-             x:DataType="vm:ImageProcessingViewModel"
-             x:Class="MockupImageProccessing.Views.ImageProcessingView">
+             x:DataType="vm:TextProcessingViewModel"
+             x:Class="MockupImageProccessing.Views.TextProcessingView">
  <UserControl.Styles>
         <Style Selector="Border.renderStatus">
             <Setter Property="Background" Value="{DynamicResource accentBackgroundBrush}"></Setter>

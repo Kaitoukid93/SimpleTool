@@ -4,9 +4,9 @@ using Avalonia.Markup.Xaml;
 
 namespace MockupImageProccessing.Views;
 
-public partial class ImageProcessingView : UserControl
+public partial class TextProcessingView : UserControl
 {
-    public ImageProcessingView()
+    public TextProcessingView()
     {
         InitializeComponent();
     }

@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MockupImageProccessing")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8ab1827abcdc1839a8ffeb77326d7917e16d5cee")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+54a4f7b50d757ab2745b332d20e7e9a5489fc6dc")]
 [assembly: System.Reflection.AssemblyProductAttribute("MockupImageProccessing")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MockupImageProccessing")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

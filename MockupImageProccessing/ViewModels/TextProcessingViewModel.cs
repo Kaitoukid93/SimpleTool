@@ -14,9 +14,9 @@ using MockupImageProccessing.Services.ImageProcessingService;
 
 namespace MockupImageProccessing.ViewModels;
 
-public class ImageProcessingViewModel : ViewModelBase
+public class TextProcessingViewModel : ViewModelBase
 {
-    public ImageProcessingViewModel()
+    public TextProcessingViewModel()
     {
     }
 
@@ -59,7 +59,7 @@ public class ImageProcessingViewModel : ViewModelBase
     }
 
 
-    public ImageProcessingViewModel(IWindowService windowService)
+    public TextProcessingViewModel(IWindowService windowService)
     {
         _windowService = windowService;
         OpenImageBrowserCommand = new AsyncRelayCommand(BrowseImage);
@@ -103,7 +103,7 @@ public class ImageProcessingViewModel : ViewModelBase
     {
         _selectedImages?.Clear();
         string[]? result = await _windowService.CreateOpenFileDialog()
-            .HavingFilter(f => f.WithExtension("jpg").WithExtension("png").WithExtension("webp").WithName("image file"))
+            .HavingFilter(f =>  f.WithExtension("bmp").WithExtension("jpg").WithExtension("png").WithExtension("webp").WithName("image file"))
             .WithAllowMultiple()
             .ShowAsync();
         if (result == null)
